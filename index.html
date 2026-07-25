@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang='ru'>
+    <head>
+        <meta charset="UTF-8">
+        <meta name='viewport' content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Настройки</title>
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <style>
+            :root {
+                    --tg-theme-bg-color: #ffffff;
+                    --tg-theme-secondary-bg-color: #f4f4f5;
+                    --tg-theme-text-color: #000000;
+                    --tg-theme-hint-color: #8e8e93;
+                    --tg-theme-link-color: #2481cc;
+                    --tg-theme-button-color: #2481cc;
+                    --tg-theme-button-text-color: #ffffff;
+            }
+        
+            body {
+                    margin: 0;
+                    padding: 16px;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                    background-color: var(--tg-theme-bg-color);
+                    color: var(--tg-theme-text-color);
+                    -webkit-tap-highlight-color: transparent;
+                    -webkit-user-select: none;
+                    user-select: none;
+            }
+        
+            h1 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    margin: 0 0 6px 0;
+            }
+        
+            h2 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 12px 0 16px 0;
+            }
+        
+            p {
+                    color: var(--tg-theme-hint-color);
+                    font-size: 14px;
+                    margin: 0 0 16px 0;
+            }
+        
+            button {
+                    width: 100%;
+                    padding: 14px 16px;
+                    font-size: 15px;
+                    font-weight: 500;
+                    border: none;
+                    border-radius: 12px;
+                    background-color: var(--tg-theme-secondary-bg-color);
+                    color: var(--tg-theme-text-color);
+                    cursor: pointer;
+                    text-align: left;
+                    box-sizing: border-box;
+                    transition: opacity 0.15s ease, transform 0.15s ease;
+                    margin-bottom: 8px;
+            }
+        
+            button:active {
+                    opacity: 0.7;
+                    transform: scale(0.99);
+            }
+        
+            .btn-back {
+                    width: auto;
+                    display: inline-block;
+                    padding: 6px 0;
+                    margin-bottom: 8px;
+                    font-size: 15px;
+                    color: var(--tg-theme-link-color);
+                    background: transparent;
+                    font-weight: 500;
+            }
+        
+            details {
+                    background-color: var(--tg-theme-secondary-bg-color);
+                    border-radius: 12px;
+                    padding: 12px 16px;
+                    margin-bottom: 8px;
+                    box-sizing: border-box;
+            }
+        
+            summary {
+                    font-size: 15px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    outline: none;
+                    list-style: none;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+            }
+        
+            summary::-webkit-details-marker {
+                    display: none;
+            }
+        
+            summary::after {
+                    content: '›';
+                    font-size: 18px;
+                    color: var(--tg-theme-hint-color);
+                    transition: transform 0.2s ease;
+            }
+        
+            details[open] summary::after {
+                    transform: rotate(90deg);
+            }
+        
+            details > div {
+                    margin-top: 12px;
+                    padding-top: 8px;
+                    border-top: 1px solid rgba(127, 127, 127, 0.15);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+            }
+        
+            label {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    font-size: 15px;
+                    cursor: pointer;
+                    line-height: 1.3;
+            }
+        
+            input[type="checkbox"] {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 6px;
+                    accent-color: var(--tg-theme-button-color);
+                    cursor: pointer;
+            }
+        
+            input[type="text"] {
+                    width: 100%;
+                    padding: 12px 14px;
+                    border: 1px solid rgba(127, 127, 127, 0.2);
+                    border-radius: 10px;
+                    background-color: var(--tg-theme-secondary-bg-color);
+                    color: var(--tg-theme-text-color);
+                    box-sizing: border-box;
+                    font-size: 15px;
+                    outline: none;
+                    margin-bottom: 10px;
+            }
+        
+            input[type="text"]:focus {
+                    border-color: var(--tg-theme-button-color);
+            }
+        
+            #keywords-list {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    margin: 10px 0 16px 0;
+            }
+        
+            #keywords-list span {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    background-color: var(--tg-theme-secondary-bg-color);
+                    padding: 6px 12px;
+                    border-radius: 16px;
+                    font-size: 14px;
+            }
+        
+            #keywords-list button {
+                    width: auto;
+                    padding: 0;
+                    margin: 0;
+                    background: transparent;
+                    color: var(--tg-theme-hint-color);
+                    font-size: 16px;
+                    line-height: 1;
+            }
+        
+            .btn-danger {
+                    color: #ff3b30;
+                    background-color: transparent;
+                    text-align: center;
+            }
+
+            .summary-card {
+                    background-color: var(--tg-theme-secondary-bg-color);
+                    border-radius: 12px;
+                    padding: 14px 16px;
+                    margin-bottom: 12px;
+            }   
+
+            .summary-card-title {
+                    font-size: 15px;
+                    font-weight: 600;
+                    margin-bottom: 10px;
+                    color: var(--tg-theme-text-color);
+            }
+
+            .tags-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px;
+            }
+
+            .badge {
+                    background-color: var(--tg-theme-bg-color);
+                    color: var(--tg-theme-text-color);
+                    padding: 6px 10px;
+                    border-radius: 8px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    border: 1px solid rgba(127, 127, 127, 0.15);
+            }
+
+            .empty-text {
+                    color: var(--tg-theme-hint-color);
+                    font-size: 14px;
+            }
+
+            .btn-start {
+                    background-color: #34c759 !important; /* Зелёный */
+                    color: #ffffff !important;
+                    text-align: center;
+                    font-weight: 600;
+            }
+
+            .btn-stop {
+                    background-color: #ff3b30 !important; /* Красный */
+                    color: #ffffff !important;
+                    text-align: center;
+                    font-weight: 600;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main-screen">
+            <h1>Настройки парсера</h1>
+            <p>Выберите нужные настройки ниже</p>
+            <div>
+                <button onclick="openScreen('regions-screen')">Выбрать ключевые регионы</button><br>
+                <button onclick="openScreen('categories-screen')">Выбрать категории</button><br>
+                <button onclick="openScreen('keywords-screen')">Ключевые слова для поиска</button><br>
+                <button onclick="openUserSettings()">Мои настройки</button>
+                <button id="search-toggle-btn" class="btn-start" onclick="toggleSearch()">Начать поиск</button>
+            </div>
+
+        </div>
+
+
+
+        <div id="regions-screen" style="display: none;">
+            <button class='btn-back' onclick="openScreen('main-screen')">← Назад</button>
+            <h2>Регионы поиска</h2>
+
+            <div>
+                <label><input type="checkbox"> Вся Беларусь</label><br><br>
+
+                <details>
+                    <summary>Брестская область</summary>
+                    <div>
+                        <label><input type="checkbox"> Выбрать всю область</label><br>
+                        <label><input type='checkbox'> Барановичи</label><br>
+                        <label><input type='checkbox'> Белоозёрск</label><br>
+                        <label><input type='checkbox'> Береза</label><br>
+                        <label><input type='checkbox'> Брест</label><br>
+                        <label><input type='checkbox'> Брестский район</label><br>
+                        <label><input type='checkbox'> Высокое</label><br>
+                        <label><input type='checkbox'> Ганцевичи</label><br>
+                        <label><input type='checkbox'> Городище</label><br>
+                        <label><input type='checkbox'> Давид - Городок</label><br>
+                        <label><input type='checkbox'> Дрогичин</label><br>
+                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Жабинка</label><br>
+                        <label><input type='checkbox'> Иваново</label><br>
+                        <label><input type='checkbox'> Ивацевичи</label><br>
+                        <label><input type='checkbox'> Каменец</label><br>
+                        <label><input type='checkbox'> Кобрин</label><br>
+                        <label><input type='checkbox'> Лунинец</label><br>
+                        <label><input type='checkbox'> Ляховичи</label><br>
+                        <label><input type='checkbox'> Малорита</label><br>
+                        <label><input type='checkbox'> Микашевичи</label><br>
+                        <label><input type='checkbox'> Пинск</label><br>
+                        <label><input type='checkbox'> Пружаны</label><br>
+                        <label><input type='checkbox'> Ружаны</label><br>
+                        <label><input type='checkbox'> Столин</label><br>
+                        <label><input type='checkbox'> Телеханы</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Гомельская область</summary>
+                    <div>
+                        <label><input type="checkbox"> Выбрать всю область</label><br>
+                        <label><input type='checkbox'> Большевик</label><br>
+                        <label><input type='checkbox'> Брагин</label><br>
+                        <label><input type='checkbox'> Буда-Кошелево</label><br>
+                        <label><input type='checkbox'> Василевичи</label><br>
+                        <label><input type='checkbox'> Ветка</label><br>
+                        <label><input type='checkbox'> Гомель</label><br>
+                        <label><input type='checkbox'> Гомельский район</label><br>
+                        <label><input type='checkbox'> Добруш</label><br>
+                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Ельск</label><br>
+                        <label><input type='checkbox'> Житковичи</label><br>
+                        <label><input type='checkbox'> Жлобин</label><br>
+                        <label><input type='checkbox'> Калинковичи</label><br>
+                        <label><input type='checkbox'> Корма</label><br>
+                        <label><input type='checkbox'> Костюковка</label><br>
+                        <label><input type='checkbox'> Лельчицы</label><br>
+                        <label><input type='checkbox'> Лоев</label><br>
+                        <label><input type='checkbox'> Мозырь</label><br>
+                        <label><input type='checkbox'> Наровля</label><br>
+                        <label><input type='checkbox'> Октябрьский</label><br>
+                        <label><input type='checkbox'> Паричи</label><br>
+                        <label><input type='checkbox'> Петриков</label><br>
+                        <label><input type='checkbox'> Речица</label><br>
+                        <label><input type='checkbox'> Рогачев</label><br>
+                        <label><input type='checkbox'> Светлогорск</label><br>
+                        <label><input type='checkbox'> Тереховка</label><br>
+                        <label><input type='checkbox'> Туров</label><br>
+                        <label><input type='checkbox'> Уваровичи</label><br>
+                        <label><input type='checkbox'> Хойники</label><br>
+                        <label><input type='checkbox'> Чечерск</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Гродненская область</summary>
+                    <div>
+                        <label><input type="checkbox"> Выбрать всю область</label><br>
+                        <label><input type='checkbox'> Березовка</label><br>
+                        <label><input type='checkbox'> Берестовица</label><br>
+                        <label><input type='checkbox'> Большая Берестовица</label><br>
+                        <label><input type='checkbox'> Волковыск</label><br>
+                        <label><input type='checkbox'> Вороново</label><br>
+                        <label><input type='checkbox'> Гродненский район</label><br>
+                        <label><input type='checkbox'> Гродно</label><br>
+                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Дятлово</label><br>
+                        <label><input type='checkbox'> Зельва</label><br>
+                        <label><input type='checkbox'> Ивье</label><br>
+                        <label><input type='checkbox'> Кореличи</label><br>
+                        <label><input type='checkbox'> Красносельский</label><br>
+                        <label><input type='checkbox'> Лида</label><br>
+                        <label><input type='checkbox'> Мир</label><br>
+                        <label><input type='checkbox'> Мосты</label><br>
+                        <label><input type='checkbox'> Новогрудок</label><br>
+                        <label><input type='checkbox'> Островец</label><br>
+                        <label><input type='checkbox'> Ошмяны</label><br>
+                        <label><input type='checkbox'> Радунь</label><br>
+                        <label><input type='checkbox'> Россь</label><br>
+                        <label><input type='checkbox'> Свислочь</label><br>
+                        <label><input type='checkbox'> Скидель</label><br>
+                        <label><input type='checkbox'> Слоним</label><br>
+                        <label><input type='checkbox'> Сморгонь</label><br>
+                        <label><input type='checkbox'> Щучин</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Могилевская область</summary>
+                    <div>
+                        <label><input type="checkbox"> Выбрать всю область</label><br>
+                        <label><input type='checkbox'> Белыничи</label><br>
+                        <label><input type='checkbox'> Бобруйск</label><br>
+                        <label><input type='checkbox'> Быхов</label><br>
+                        <label><input type='checkbox'> Глуск</label><br>
+                        <label><input type='checkbox'> Горки</label><br>
+                        <label><input type='checkbox'> Дрибин</label><br>
+                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Елизово</label><br>
+                        <label><input type='checkbox'> Кировск</label><br>
+                        <label><input type='checkbox'> Климовичи</label><br>
+                        <label><input type='checkbox'> Кличев</label><br>
+                        <label><input type='checkbox'> Костюковичи</label><br>
+                        <label><input type='checkbox'> Краснополье</label><br>
+                        <label><input type='checkbox'> Кричев</label><br>
+                        <label><input type='checkbox'> Круглое</label><br>
+                        <label><input type='checkbox'> Могилев</label><br>
+                        <label><input type='checkbox'> Могилевский район</label><br>
+                        <label><input type='checkbox'> Мстиславль</label><br>
+                        <label><input type='checkbox'> Осиповичи</label><br>
+                        <label><input type='checkbox'> Славгород</label><br>
+                        <label><input type='checkbox'> Хотимск</label><br>
+                        <label><input type='checkbox'> Чаусы</label><br>
+                        <label><input type='checkbox'> Чериков</label><br>
+                        <label><input type='checkbox'> Шклов</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Минская область</summary>
+                    <div>
+                        <label><input type="checkbox"> Выбрать всю область</label><br>
+                        <label><input type='checkbox'> Березино</label><br>
+                        <label><input type='checkbox'> Борисов</label><br>
+                        <label><input type='checkbox'> Боровляны</label><br>
+                        <label><input type='checkbox'> Вилейка</label><br>
+                        <label><input type='checkbox'> Воложин</label><br>
+                        <label><input type='checkbox'> Городея</label><br>
+                        <label><input type='checkbox'> Дзержинск</label><br>
+                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Ждановичи</label><br>
+                        <label><input type='checkbox'> Жодино</label><br>
+                        <label><input type='checkbox'> Заславль</label><br>
+                        <label><input type='checkbox'> Зеленый Бор</label><br>
+                        <label><input type='checkbox'> Ивенец</label><br>
+                        <label><input type='checkbox'> Клецк</label><br>
+                        <label><input type='checkbox'> Копыль</label><br>
+                        <label><input type='checkbox'> Крупки</label><br>
+                        <label><input type='checkbox'> Логойск</label><br>
+                        <label><input type='checkbox'> Любань</label><br>
+                        <label><input type='checkbox'> Марьина Горка</label><br>
+                        <label><input type='checkbox'> Мачулищи</label><br>
+                        <label><input type='checkbox'> Минский район</label><br>
+                        <label><input type='checkbox'> Молодечно</label><br>
+                        <label><input type='checkbox'> Мядель</label><br>
+                        <label><input type='checkbox'> Несвиж</label><br>
+                        <label><input type='checkbox'> Плещеницы</label><br>
+                        <label><input type='checkbox'> Радошковичи</label><br>
+                        <label><input type='checkbox'> Руденск</label><br>
+                        <label><input type='checkbox'> Слуцк</label><br>
+                        <label><input type='checkbox'> Смиловичи</label><br>
+                        <label><input type='checkbox'> Смолевичи</label><br>
+                        <label><input type='checkbox'> Солигорск</label><br>
+                        <label><input type='checkbox'> Старобин</label><br>
+                        <label><input type='checkbox'> Старые Дороги</label><br>
+                        <label><input type='checkbox'> Столбцы</label><br>
+                        <label><input type='checkbox'> Узда</label><br>
+                        <label><input type='checkbox'> Фаниполь</label><br>
+                        <label><input type='checkbox'> Червень</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Витебская область</summary>
+                    <div>
+                        <label><input type="checkbox"> Выбрать всю область</label><br>
+                        <label><input type='checkbox'> Барань</label><br>
+                        <label><input type='checkbox'> Бешенковичи</label><br>
+                        <label><input type='checkbox'> Браслав</label><br>
+                        <label><input type='checkbox'> Браславский район</label><br>
+                        <label><input type='checkbox'> Верхнедвинск</label><br>
+                        <label><input type='checkbox'> Ветрино</label><br>
+                        <label><input type='checkbox'> Витебск</label><br>
+                        <label><input type='checkbox'> Витебский район</label><br>
+                        <label><input type='checkbox'> Глубокое</label><br>
+                        <label><input type='checkbox'> Городок</label><br>
+                        <label><input type='checkbox'> Докшицы</label><br>
+                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Дубровно</label><br>
+                        <label><input type='checkbox'> Коханово</label><br>
+                        <label><input type='checkbox'> Лепель</label><br>
+                        <label><input type='checkbox'> Лиозно</label><br>
+                        <label><input type='checkbox'> Миоры</label><br>
+                        <label><input type='checkbox'> Новолукомль</label><br>
+                        <label><input type='checkbox'> Новополоцк</label><br>
+                        <label><input type='checkbox'> Орша</label><br>
+                        <label><input type='checkbox'> Полоцк</label><br>
+                        <label><input type='checkbox'> Поставы</label><br>
+                        <label><input type='checkbox'> Россоны</label><br>
+                        <label><input type='checkbox'> Сенно</label><br>
+                        <label><input type='checkbox'> Толочин</label><br>
+                        <label><input type='checkbox'> Ушачи</label><br>
+                        <label><input type='checkbox'> Чашники</label><br>
+                        <label><input type='checkbox'> Шарковщина</label><br>
+                        <label><input type='checkbox'> Шумилино</label><br>
+                        
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Минск</summary>
+                    <div>
+                        <label><input type="checkbox"> Выбрать все районы</label><br>
+                        <label><input type='checkbox'> Заводской район</label><br>
+                        <label><input type='checkbox'> Ленинский район</label><br>
+                        <label><input type='checkbox'> Московский район</label><br>
+                        <label><input type='checkbox'> Октябрьский район</label><br>
+                        <label><input type='checkbox'> Партизанский район</label><br>
+                        <label><input type='checkbox'> Первомайский район</label><br>
+                        <label><input type='checkbox'> Советский район</label><br>
+                        <label><input type='checkbox'> Фрунзенский район</label><br>
+                        <label><input type='checkbox'> Центральный район</label><br>
+                    </div>
+                </details>
+
+                
+            </div>
+        </div>
+
+       
+
+        <div id="categories-screen" style="display: none;">
+            <button class='btn-back' onclick="openScreen('main-screen')">← Назад</button>
+            <h2>Выбрать категории</h2>
+
+            <div>
+                <label><input type="checkbox">Искать по всем категориям</label><br><br>
+
+                <details>
+                    <summary>Недвижимость</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Гаражи и стоянки</label><br>
+                        <label><input type='checkbox'>Дома, агроусадьбы, коттеджи</label><br>
+                        <label><input type='checkbox'>Квартиры</label><br>
+                        <label><input type='checkbox'>Коммерческая</label><br>
+                        <label><input type='checkbox'>Комнаты</label><br>
+                        <label><input type='checkbox'>Новостройки</label><br>
+                        <label><input type='checkbox'>Участки</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Путешествия</summary>
+                    <div>
+                        <label><input type='checkbox'>Путешествия</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Авто и запчасти</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Легковые авто</label><br>
+                        <label><input type='checkbox'>Запчасти</label><br>
+                        <label><input type='checkbox'>Грузовики и автобусы</label><br>
+                        <label><input type='checkbox'>Мототехника</label><br>
+                        <label><input type='checkbox'>Шины, диски</label><br>
+                        <label><input type='checkbox'>Аксессуары</label><br>
+                        <label><input type='checkbox'>Сельхозтехника</label><br>
+                        <label><input type='checkbox'>Спецтехника</label><br>
+                        <label><input type='checkbox'>Прицепы</label><br>
+                        <label><input type='checkbox'>Водный транспорт</label><br>
+                        <label><input type='checkbox'>Инструмент, оборудование</label><br>
+                        <label><input type='checkbox'>Автохимия и автомасла</label><br>
+                        <label><input type='checkbox'>Услуги для авто</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Услуги</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Услуги для авто</label><br>
+                        <label><input type='checkbox'>Бытовые услуги</label><br>
+                        <label><input type='checkbox'>Компьютерные услуги, интернет</label><br>
+                        <label><input type='checkbox'>Ремонт техники и электроники</label><br>
+                        <label><input type='checkbox'>Красота</label><br>
+                        <label><input type='checkbox'>Здоровье</label><br>
+                        <label><input type='checkbox'>Няни и сиделки</label><br>
+                        <label><input type='checkbox'>Образовательные услуги</label><br>
+                        <label><input type='checkbox'>Грузоперевозки</label><br>
+                        <label><input type='checkbox'>Пассажирские перевозки</label><br>
+                        <label><input type='checkbox'>Услуги грузчиков</label><br>
+                        <label><input type='checkbox'>Услуги эвакуатора</label><br>
+                        <label><input type='checkbox'>Вывоз мусора</label><br>
+                        <label><input type='checkbox'>Полиграфия, наружная реклама</label><br>
+                        <label><input type='checkbox'>Строительные работы</label><br>
+                        <label><input type='checkbox'>Ремонт квартиры, дома</label><br>
+                        <label><input type='checkbox'>Ремонт, сборка, перетяжка мебели</label><br>
+                        <label><input type='checkbox'>Ремонт и пошив одежды</label><br>
+                        <label><input type='checkbox'>Сад, благоустройство</label><br>
+                        <label><input type='checkbox'>Услуги для животных</label><br>
+                        <label><input type='checkbox'>Услуги для торжеств</label><br>
+                        <label><input type='checkbox'>Фото и видеосъемка</label><br>
+                        <label><input type='checkbox'>Деловые услуги</label><br>
+                        <label><input type='checkbox'>Впечатления</label><br>
+                        <label><input type='checkbox'>Аренда и прокат</label><br>
+                        <label><input type='checkbox'>Аренда бань и беседок</label><br>
+                        <label><input type='checkbox'>Прочие услуги</label><br>
+                        <label><input type='checkbox'>Ритуальные товары и услуги</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Бытовая техника</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Техника для кухни</label><br>
+                        <label><input type='checkbox'>Крупная техника для кухни</label><br>
+                        <label><input type='checkbox'>Техника для уборки</label><br>
+                        <label><input type='checkbox'>Уход за одеждой, пошив</label><br>
+                        <label><input type='checkbox'>Климатическая техника</label><br>
+                        <label><input type='checkbox'>Техника для красоты и здоровья</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Компьютерная техника</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Ноутбуки</label><br>
+                        <label><input type='checkbox'>Компьютеры / системные блоки</label><br>
+                        <label><input type='checkbox'>Мониторы</label><br>
+                        <label><input type='checkbox'>Комплектующие</label><br>
+                        <label><input type='checkbox'>Оргтехника</label><br>
+                        <label><input type='checkbox'>Периферия и аксессуары</label><br>
+                        <label><input type='checkbox'>Сетевое оборудование</label><br>
+                        <label><input type='checkbox'>Прочие компьютерные товары</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Телефоны и планшеты</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Мобильные телефоны</label><br>
+                        <label><input type='checkbox'>Комплектующие для телефонов</label><br>
+                        <label><input type='checkbox'>Аксессуары для телефонов</label><br>
+                        <label><input type='checkbox'>Телефония и связь</label><br>
+                        <label><input type='checkbox'>Планшеты</label><br>
+                        <label><input type='checkbox'>Комплектующие для планшетов</label><br>
+                        <label><input type='checkbox'>Графические планшеты</label><br>
+                        <label><input type='checkbox'>Электронные книги</label><br>
+                        <label><input type='checkbox'>Умные часы и фитнес-браслеты</label><br>
+                        <label><input type='checkbox'>Аксессуары для планшетов, книг, часов</label><br>
+                        <label><input type='checkbox'>Наушники</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Электроника</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Аудиотехника</label><br>
+                        <label><input type='checkbox'>Наушники</label><br>
+                        <label><input type='checkbox'>ТВ и видеотехника</label><br>
+                        <label><input type='checkbox'>Фототехника и оптика</label><br>
+                        <label><input type='checkbox'>Игры и приставки</label><br>
+                        <label><input type='checkbox'>Безопасность и умный дом</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Женский гардероб</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Премиум одежда 💎</label><br>
+                        <label><input type='checkbox'>Женская одежда</label><br>
+                        <label><input type='checkbox'>Женская обувь</label><br>
+                        <label><input type='checkbox'>Женские аксессуары</label><br>
+                        <label><input type='checkbox'>Ремонт и пошив одежды</label><br>
+                        <label><input type='checkbox'>Одежда для беременных</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Мужской гардероб</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Мужская одежда</label><br>
+                        <label><input type='checkbox'>Мужская обувь</label><br>
+                        <label><input type='checkbox'>Мужские аксессуары</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Красота и здоровье</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Декоративная косметика</label><br>
+                        <label><input type='checkbox'>Уходовая косметика</label><br>
+                        <label><input type='checkbox'>Парфюмерия</label><br>
+                        <label><input type='checkbox'>Маникюр, педикюр</label><br>
+                        <label><input type='checkbox'>Средства для волос</label><br>
+                        <label><input type='checkbox'>Средства гигиены, депиляция</label><br>
+                        <label><input type='checkbox'>Ресницы и брови, татуаж</label><br>
+                        <label><input type='checkbox'>Косметические аксессуары</label><br>
+                        <label><input type='checkbox'>Медицинские товары</label><br>
+                        <label><input type='checkbox'>Техника для красоты и здоровья</label><br>
+                        <label><input type='checkbox'>Услуги: красота</label><br>
+                        <label><input type='checkbox'>Услуги: здоровье</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Все для детей и мам</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Одежда до 1 года</label><br>
+                        <label><input type='checkbox'>Одежда до 1 года</label><br>
+                        <label><input type='checkbox'>Одежда для девочек</label><br>
+                        <label><input type='checkbox'>Одежда для мальчиков</label><br>
+                        <label><input type='checkbox'>Аксессуары для детей</label><br>
+                        <label><input type='checkbox'>Детская обувь</label><br>
+                        <label><input type='checkbox'>Ходунки, шезлонги, качели</label><br>
+                        <label><input type='checkbox'>Коляски</label><br>
+                        <label><input type='checkbox'>Автокресла и бустеры</label><br>
+                        <label><input type='checkbox'>Кормление и уход</label><br>
+                        <label><input type='checkbox'>Текстиль для детей</label><br>
+                        <label><input type='checkbox'>Сумки-кенгуру и слинги</label><br>
+                        <label><input type='checkbox'>Игрушки и книги</label><br>
+                        <label><input type='checkbox'>Детский транспорт</label><br>
+                        <label><input type='checkbox'>Товары для мам</label><br>
+                        <label><input type='checkbox'>Одежда для беременных</label><br>
+                        <label><input type='checkbox'>Прочие товары для детей</label><br>
+                        <label><input type='checkbox'>Детская мебель</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Мебель</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Банкетки, пуфики</label><br>
+                        <label><input type='checkbox'>Вешалки, прихожие</label><br>
+                        <label><input type='checkbox'>Детская мебель</label><br>
+                        <label><input type='checkbox'>Комоды</label><br>
+                        <label><input type='checkbox'>Кровати, матрасы</label><br>
+                        <label><input type='checkbox'>Кухни</label><br>
+                        <label><input type='checkbox'>Кухонные уголки</label><br>
+                        <label><input type='checkbox'>Мягкая мебель</label><br>
+                        <label><input type='checkbox'>Полки, стеллажи, шкафчики</label><br>
+                        <label><input type='checkbox'>Спальные гарнитуры</label><br>
+                        <label><input type='checkbox'>Стенки, секции, модули</label><br>
+                        <label><input type='checkbox'>Столы и обеденные группы</label><br>
+                        <label><input type='checkbox'>Стулья</label><br>
+                        <label><input type='checkbox'>Тумбы, буфеты</label><br>
+                        <label><input type='checkbox'>Шкафы</label><br>
+                        <label><input type='checkbox'>Мебельная фурнитура и составляющие</label><br>
+                        <label><input type='checkbox'>Прочая мебель</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Все для дома</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Предметы интерьера, зеркала</label><br>
+                        <label><input type='checkbox'>Шторы, жалюзи, карнизы</label><br>
+                        <label><input type='checkbox'>Текстиль и ковры</label><br>
+                        <label><input type='checkbox'>Освещение</label><br>
+                        <label><input type='checkbox'>Хозяйственные товары</label><br>
+                        <label><input type='checkbox'>Посуда и кухонные аксессуары</label><br>
+                        <label><input type='checkbox'>Комнатные растения</label><br>
+                        <label><input type='checkbox'>Бытовые услуги</label><br>
+                        <label><input type='checkbox'>Ремонт мебели</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Ремонт и стройка</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Строительный инструмент</label><br>
+                        <label><input type='checkbox'>Строительное оборудование</label><br>
+                        <label><input type='checkbox'>Сантехника и отопление</label><br>
+                        <label><input type='checkbox'>Стройматериалы</label><br>
+                        <label><input type='checkbox'>Отделочные материалы</label><br>
+                        <label><input type='checkbox'>Окна и двери</label><br>
+                        <label><input type='checkbox'>Дома, срубы и сооружения</label><br>
+                        <label><input type='checkbox'>Ворота, заборы</label><br>
+                        <label><input type='checkbox'>Электроснабжение</label><br>
+                        <label><input type='checkbox'>Средства индивидуальной защиты</label><br>
+                        <label><input type='checkbox'>Строительные работы</label><br>
+                        <label><input type='checkbox'>Ремонт квартиры, дома</label><br>
+                        <label><input type='checkbox'>Прочее для ремонта и стройки</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Сад и огород</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Садовая мебель и бассейны</label><br>
+                        <label><input type='checkbox'>Мангалы, аксессуары, топливо</label><br>
+                        <label><input type='checkbox'>Мотоблоки и культиваторы</label><br>
+                        <label><input type='checkbox'>Садовая техника</label><br>
+                        <label><input type='checkbox'>Садовый инвентарь</label><br>
+                        <label><input type='checkbox'>Теплицы и парники</label><br>
+                        <label><input type='checkbox'>Растения, рассада и семена</label><br>
+                        <label><input type='checkbox'>Удобрения и агрохимия</label><br>
+                        <label><input type='checkbox'>Все для пчеловода</label><br>
+                        <label><input type='checkbox'>Бани, хозблоки, санузлы</label><br>
+                        <label><input type='checkbox'>Прочее для сада и огорода</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Хобби, спорт и туризм</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>CD, DVD, пластинки</label><br>
+                        <label><input type='checkbox'>Антиквариат и коллекции</label><br>
+                        <label><input type='checkbox'>Билеты</label><br>
+                        <label><input type='checkbox'>Книги и журналы</label><br>
+                        <label><input type='checkbox'>Металлоискатели</label><br>
+                        <label><input type='checkbox'>Музыкальные инструменты</label><br>
+                        <label><input type='checkbox'>Настольные игры и пазлы</label><br>
+                        <label><input type='checkbox'>Охота и рыбалка</label><br>
+                        <label><input type='checkbox'>Туристические товары</label><br>
+                        <label><input type='checkbox'>Радиоуправляемые модели</label><br>
+                        <label><input type='checkbox'>Рукоделие</label><br>
+                        <label><input type='checkbox'>Спорттовары</label><br>
+                        <label><input type='checkbox'>Велосипеды</label><br>
+                        <label><input type='checkbox'>Электротранспорт</label><br>
+                        <label><input type='checkbox'>Туристические услуги</label><br>
+                        <label><input type='checkbox'>Прочее в Хобби, спорт и туризм</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Свадьба и праздники</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Свадебные платья</label><br>
+                        <label><input type='checkbox'>Свадебные костюмы</label><br>
+                        <label><input type='checkbox'>Свадебная обувь</label><br>
+                        <label><input type='checkbox'>Свадебные аксессуары</label><br>
+                        <label><input type='checkbox'>Подарки и праздничные товары</label><br>
+                        <label><input type='checkbox'>Карнавальные костюмы</label><br>
+                        <label><input type='checkbox'>Услуги для торжеств</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Животные</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Питомцы в дар</label><br>
+                        <label><input type='checkbox'>Домашние питомцы</label><br>
+                        <label><input type='checkbox'>Сельхоз животные</label><br>
+                        <label><input type='checkbox'>Товары для животных</label><br>
+                        <label><input type='checkbox'>Вязка животных</label><br>
+                        <label><input type='checkbox'>Услуги для животных</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Готовый бизнес оборудование</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Готовый бизнес</label><br>
+                        <label><input type='checkbox'>Оборудование для бизнеса</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Работа</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Вакансии</label><br>
+                        <label><input type='checkbox'>Ищу сотрудников</label><br>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Прочее</summary>
+                    <div>
+                        <label><input type='checkbox'>Все</label><br>
+                        <label><input type='checkbox'>Бюро находок</label><br>
+                        <label><input type='checkbox'>Кальяны</label><br>
+                        <label><input type='checkbox'>Канцелярские товары</label><br>
+                        <label><input type='checkbox'>Продукты питания</label><br>
+                        <label><input type='checkbox'>Ритуальные товары и услуги</label><br>
+                        <label><input type='checkbox'>Электронные парогенераторы</label><br>
+                        <label><input type='checkbox'>Спрос</label><br>
+                        <label><input type='checkbox'>Все остальное</label><br>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+
+
+        <div id="keywords-screen" style="display: none;">
+            <button class='btn-back' onclick="openScreen('main-screen')">← Назад</button>
+            <h2>Ключевые слова</h2>
+            <div>
+                <label>
+                    <input id='ai-filter' type="checkbox" checked> Использовать ИИ-фильтр
+                </label>
+            </div>
+
+            <br>
+
+            <div>
+                <input id='keywords-input' type="text" placeholder="Введите слова через запятую...">
+                <button style="background-color: var(--tg-theme-button-color); color: var(--tg-theme-button-text-color); text-align: center;" onclick="saveKeywords()">Добавить ключевые слова</button>
+            </div>
+
+            <p>Ваши ключевые слова:</p>
+
+            <div id="keywords-list">
+                <em>пока не заданы</em>
+            </div>
+
+            <button class='btn-danger'onclick="resetKeywords()">Сбросить ключевые слова</button>
+        </div>
+
+        <div id="usersettings-screen" style="display: none">
+            <button class='btn-back' onclick="openScreen('main-screen')">← Назад</button>
+            <h2>Мои текущие настройки</h2>
+
+            <div class="summary-card">
+                <div class="summary-card-title">🌍 Регионы</div>
+                <div id="summary-regions" class="tags-container">
+                    <em class="empty-text">Ничего не выбрано</em>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-title">📂 Категории</div>
+                <div id="summary-categories" class="tags-container">
+                    <em class="empty-text">Ничего не выбрано</em>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-card-title">🔑 Ключевые слова</div>
+                <div id="summary-keywords" class="tags-container">
+                    <em class="empty-text">Не заданы</em>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const tg = window.Telegram.WebApp;
+
+            tg.ready();
+            tg.expand();
+
+            let isSearching = false
+
+            function toggleSearch() {
+                const btn = document.getElementById('search-toggle-btn');
+                isSearching = !isSearching;
+
+                if (isSearching) {
+                    btn.textContent = 'Остановить поиск';
+                    btn.className = 'btn-stop';
+
+                    const DATA = {
+                        action: 'start-search',
+                        regions: getSelectedRegions(),
+                        categories: getSelectedCategories(),
+                        keywords: keywords,
+                        aiFilter: document.getElementById('ai-filter').checked
+                    };
+
+                    tg.sendData(JSON.stringify(DATA));
+                } else {
+                    btn.textContent = 'Начать поиск';
+                    btn.className = 'btn-start';
+
+                    const DATA = {
+                        action: 'stop-searching'
+                    };
+
+                    tg.sendData(JSON.stringify(DATA));
+                }
+
+
+            }
+
+            function openScreen(screenId) {
+                document.getElementById('main-screen').style.display = 'none';
+                document.getElementById('regions-screen').style.display = 'none';
+                document.getElementById('categories-screen').style.display = 'none';
+                document.getElementById('keywords-screen').style.display = 'none';
+                document.getElementById('usersettings-screen').style.display = 'none';
+
+                document.getElementById(screenId).style.display = 'block';
+            }
+
+            let keywords = []
+
+            function saveKeywords() {
+                const input = document.getElementById('keywords-input');
+                const text = input.value.trim();
+
+                if (text === '') return;
+
+                const newWords = text.split(',');
+                newWords.forEach(word => {
+                    const cleanWord = word.trim();
+
+                    if (cleanWord !== '' && !keywords.includes(cleanWord)) {
+                        keywords.push(cleanWord);
+                    }
+                });
+
+                input.value = '';
+                renderKeywords();
+                
+            }
+
+            function renderKeywords() {
+                const container = document.getElementById('keywords-list');
+
+                if (keywords.length === 0) {
+                    container.innerHTML = '<em>пока не заданы</em>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                keywords.forEach((word, index) => {
+                    container.innerHTML += `
+                        <span>
+                            ${word}
+                            <button onclick='removeKeyword(${index})'>×</button>
+                        </span>
+                    `;
+                });
+            }
+
+            function removeKeyword(index) {
+                keywords.splice(index, 1);
+                renderKeywords();
+            }
+
+            function resetKeywords() {
+                keywords = []
+                renderKeywords()
+            }
+
+            function initRegionCheckboxes() {
+                const countryCheckbox = document.querySelector('#regions-screen > div > label > input[type="checkbox"]');
+                const regionBlocks = document.querySelectorAll('#regions-screen details');
+
+                let allRegionAndCityCheckboxes = [];
+
+                regionBlocks.forEach(details => {
+                    const checkboxes = details.querySelectorAll('input[type="checkbox"]');
+                    const masterCheckbox = checkboxes[0];
+                    const cityCheckboxes = Array.from(checkboxes).slice(1);
+                    masterCheckbox.addEventListener('change', () => {
+                        cityCheckboxes.forEach(cityCb => {
+                            cityCb.checked = masterCheckbox.checked;
+                        });
+                        updateCountryCheckbox();
+                    });
+                    cityCheckboxes.forEach(cityCb => {
+                        cityCb.addEventListener('change', () => {
+                            const areAllCitiesChecked = cityCheckboxes.every(cb => cb.checked);
+                            masterCheckbox.checked = areAllCitiesChecked;
+                            updateCountryCheckbox();
+                        });
+                    });
+                    allRegionAndCityCheckboxes.push(masterCheckbox, ...cityCheckboxes);
+                });
+                if (countryCheckbox) {
+                    countryCheckbox.addEventListener('change', () => {
+                        allRegionAndCityCheckboxes.forEach(cb => {
+                            cb.checked = countryCheckbox.checked;
+                        });
+                    });
+                }
+                function updateCountryCheckbox() {
+                    if (!countryCheckbox) return;
+                    const isEverythingChecked = allRegionAndCityCheckboxes.every(cb => cb.checked);
+                    countryCheckbox.checked = isEverythingChecked;
+                }
+            }
+            document.addEventListener('DOMContentLoaded', initRegionCheckboxes);
+
+            function initCategoryCheckboxes() {
+                const allCategoriesCheckboxes = document.querySelector('#categories-screen > div > label > input[type="checkbox"]');
+                const categoryBlocks = document.querySelectorAll('#categories-screen details');
+
+                let allCategoryCheckbox = [];
+
+                categoryBlocks.forEach(details => {
+                    const checkboxes = details.querySelectorAll('input[type="checkbox"]');
+                    const masterCheckbox = checkboxes[0];
+                    const categoriesCheckboxes = Array.from(checkboxes).slice(1);
+                    masterCheckbox.addEventListener('change', () => {
+                        categoriesCheckboxes.forEach(ccb => {
+                            ccb.checked = masterCheckbox.checked;
+                        });
+                        updateCategoryCheckbox()
+                    });
+
+                    categoriesCheckboxes.forEach(ccb => {
+                        ccb.addEventListener('change', () => {
+                            const areAllcategoriesChecked = categoriesCheckboxes.every(cb => cb.checked);
+                            masterCheckbox.checked = areAllcategoriesChecked;
+                            updateCategoryCheckbox()
+                        });
+                    });
+
+                    allCategoryCheckbox.push(masterCheckbox, ...categoriesCheckboxes)
+                });
+
+                if (allCategoriesCheckboxes) {
+                    allCategoriesCheckboxes.addEventListener('change', () => {
+                        allCategoryCheckbox.forEach(ccb => {
+                            ccb.checked = allCategoriesCheckboxes.checked;
+                        });
+                    });
+                };
+                
+                function updateCategoryCheckbox() {
+                    if (!allCategoriesCheckboxes) return;
+                    const isEverythingChecked = allCategoryCheckbox.every(cb => cb.checked);
+                    allCategoriesCheckboxes.checked = isEverythingChecked;
+                }
+            }
+            document.addEventListener('DOMContentLoaded', initCategoryCheckboxes);
+
+            function getSelectedRegions() {
+                const countryCb = document.querySelector('#regions-screen div > label > input[type="checkbox"]');
+                if (countryCb && countryCb.checked) {
+                    return ['Вся Беларусь'];
+                }
+
+                const selected = [];
+                const regionsBlock = document.querySelectorAll('#regions-screen details');
+
+                regionsBlock.forEach(details => {
+                    const allOblCheckbox = details.querySelectorAll('input[type="checkbox"]');
+                    const masterCheckbox = allOblCheckbox[0];
+                    const regionName = details.querySelector('summary').textContent.trim();
+
+                    if (masterCheckbox && masterCheckbox.checked) {
+                        selected.push(regionName);
+                    } else {
+                        Array.from(allOblCheckbox).slice(1).forEach(cb => {
+                            if (cb && cb.checked) {
+                                selected.push(cb.parentElement.textContent.trim())
+                            }
+                        });
+
+                    }
+                });
+
+                return selected
+            }
+
+            function getSelectedCategories() {
+   
+                const allCategoriesCb = document.querySelector('#categories-screen > div > label > input[type="checkbox"]');
+                if (allCategoriesCb && allCategoriesCb.checked) {
+                    return ['Все категории'];
+                }
+
+                const selected = [];
+   
+                const categoryBlocks = document.querySelectorAll('#categories-screen details');
+
+                categoryBlocks.forEach(details => {
+                    const checkboxes = details.querySelectorAll('input[type="checkbox"]');
+                    const masterCb = checkboxes[0]; // Первый чекбокс ("Все")
+                    const categoryName = details.querySelector('summary').textContent.trim();
+
+                    if (masterCb && masterCb.checked) {
+          
+                        selected.push(`${categoryName}`);
+                    } else {
+         
+                        const subCheckboxes = Array.from(checkboxes).slice(1);
+                        subCheckboxes.forEach(cb => {
+                            if (cb.checked) {
+                  
+                                selected.push(cb.parentElement.textContent.trim());
+                            }
+                        });
+                    }
+                });
+
+                return selected;
+            }
+
+            function renderSummary() {
+                const regions = getSelectedRegions();
+                const regionsContainer = document.getElementById('summary-regions');
+                
+                if (regions.length>0) {
+                    regionsContainer.innerHTML = regions.map(item => `<span class="badge">${item}</span>`).join('');
+                } else {
+                    regionsContainer.innerHTML = '<em class="empty-text">Ничего не выбрано</em>';
+                }
+
+                const categories = getSelectedCategories();
+                const categoriesContainer = document.getElementById('summary-categories');
+
+                if (categories.length > 0) {
+                    categoriesContainer.innerHTML = categories.map(item => `<span class="badge">${item}</span>`).join('');
+                } else {
+                    categoriesContainer.innerHTML = '<em class="empty-text">Ничего не выбрано</em>';
+                }
+
+                const keywordsContainer = document.getElementById('summary-keywords');
+                if (keywords.length > 0) {
+                    keywordsContainer.innerHTML = keywords.map(word => `<span class="badge">${word}</span>`).join('');
+                } else {
+                    keywordsContainer.innerHTML = '<em class="empty-text">Не заданы</em>';
+                }
+            }
+
+            function openUserSettings() {
+                renderSummary()
+                openScreen('usersettings-screen')
+            }
+        </script>
+    </body>
+</html>
