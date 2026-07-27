@@ -927,11 +927,49 @@
             tg.ready();
             tg.expand();
 
+            function setCloudItem(key, value) {
+                return new Promise((resolve, reject) => {
+                    tg.CloudStorage.setItem(key, value, (success, error) => {
+                        if (error) reject(error);
+                        else resolve(success);
+                    });
+                });
+            }
+
+            function getCloudItem(key) {
+                return new Promise((resolve, reject) => {
+                    tg.CloudStorage.getItem(key, (success, error) => {
+                        if (error) reject(error);
+                        else resolve(success);
+                    });
+                });
+            }
+
+
+
             let isSearching = false
 
-            function toggleSearch() {
+            async function toggleSearch() {
                 const btn = document.getElementById('search-toggle-btn');
                 isSearching = !isSearching;
+
+                const currentRegions = getSelectedRegions();
+                const currentCategories = getSelectedCategories();
+                const currentAiFilter = document.getElementById('ai-filter').checked;
+
+                const dataToSend = {
+                    regions: currentRegions,
+                    categories: currentCategories,
+                    keywords: keywords,
+                    isSearching: isSearching,
+                    aiFilter: currentAiFilter
+                };
+
+                try {
+                    await setCloudItem('kufar_app_state', JSON.stringify(dataToSend))
+                } catch (e) { 
+                    console.error("Не удалось сохранить в CloudStorage:", e);
+                }
 
                 if (isSearching) {
                     btn.textContent = 'Остановить поиск';
@@ -958,6 +996,70 @@
                 }
 
 
+            }
+
+            async function loadSavedState() {
+                const rawData = await getCloudItem('Kufar_app_state');
+
+                if (!rawData) return ;
+
+                const state = JSON.parse(rawData);
+
+                if (Array.isArray(state.keywords)) {
+                    keywords = state.keywords;
+                    renderKeywords();
+                }
+
+                if (typeof state.aiFilter === 'boolean') {
+                    document.getElementById('ai-filter').checked = state.aiFilter
+                }
+
+                if (state.isSearching) {
+                    isSearching = true;
+                    const btn = document.getElementById('search-toggle-btn');
+                    btn.textContent = 'Остановить поиск';
+                    btn.className = 'btn-stop';
+                }
+            }
+
+            function restoreCheckboxes(conteinerId, savedList) {
+                if (!savedList || !Array.isArray(savedList)) return;
+
+                const container = document.getElementById(conteinerId);
+
+                const topCb = container.querySelector('div > label > input[type="checkbox"]');
+                if (topCb) {
+                    const topText = topCb.parentElement.textContent.trim();
+                    if (savedList.includes(topText)) {
+                        topCb.checked = true;
+                        topCb.dispatchEvent(new Event('change'));
+                        return;
+                    }
+                }
+
+                const detailsBlock = container.querySelectorAll('details')
+                detailsBlock.forEach(details => {
+                    const summaryText = details.querySelector('summary').textContent.trim();
+                    const allCb = details.querySelectorAll('input[type="checkbox"]');
+                    const masterCb = allCb[0];
+
+                    if (savesList.includes(summatyText)) {
+                        if (masterCb) {
+                            masterCb.checked = true;
+                            masterCb.dispatchEvent(new Event('change'))
+                        }
+                    } else {
+                        const subCb = Array.from(allCb).slice(1);
+
+                        subCb.forEach(cb => {
+                            const tetxCb = cb.parentElement.textContent.trim();
+                            if (savedList.includes(tetxCb)) {
+                                cb.checked = true;
+                                cb.dispatchEvent(new Event('change'))
+                            }
+                        });
+                    }
+                });
             }
 
             function openScreen(screenId) {
@@ -1131,7 +1233,7 @@
                     }
                 });
 
-                return selected
+                return selected;
             }
 
             function getSelectedCategories() {
@@ -1147,7 +1249,7 @@
 
                 categoryBlocks.forEach(details => {
                     const checkboxes = details.querySelectorAll('input[type="checkbox"]');
-                    const masterCb = checkboxes[0]; // Первый чекбокс ("Все")
+                    const masterCb = checkboxes[0]; 
                     const categoryName = details.querySelector('summary').textContent.trim();
 
                     if (masterCb && masterCb.checked) {
@@ -1196,9 +1298,16 @@
             }
 
             function openUserSettings() {
-                renderSummary()
-                openScreen('usersettings-screen')
+                renderSummary();
+                openScreen('usersettings-screen');
             }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                initCategoryCheckboxes();
+                initRegionCheckboxes();
+
+                loadSavedState();
+            });
         </script>
     </body>
 </html>
