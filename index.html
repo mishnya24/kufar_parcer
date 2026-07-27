@@ -999,7 +999,7 @@
             }
 
             async function loadSavedState() {
-                const rawData = await getCloudItem('Kufar_app_state');
+                const rawData = await getCloudItem('kufar_app_state');
 
                 if (!rawData) return ;
 
@@ -1019,6 +1019,14 @@
                     const btn = document.getElementById('search-toggle-btn');
                     btn.textContent = 'Остановить поиск';
                     btn.className = 'btn-stop';
+                }
+
+                if (Array.isArray(state.regions)) {
+                    restoreCheckboxes('regions-screen', state.regions); 
+                }
+
+                if (Array.isArray(state.categories)) {
+                    restoreCheckboxes('categories-screen', state.categories);
                 }
             }
 
@@ -1043,7 +1051,7 @@
                     const allCb = details.querySelectorAll('input[type="checkbox"]');
                     const masterCb = allCb[0];
 
-                    if (savesList.includes(summatyText)) {
+                    if (savedList.includes(summaryText)) {
                         if (masterCb) {
                             masterCb.checked = true;
                             masterCb.dispatchEvent(new Event('change'))
