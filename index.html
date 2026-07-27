@@ -953,23 +953,7 @@
                 const btn = document.getElementById('search-toggle-btn');
                 isSearching = !isSearching;
 
-                const currentRegions = getSelectedRegions();
-                const currentCategories = getSelectedCategories();
-                const currentAiFilter = document.getElementById('ai-filter').checked;
-
-                const dataToSend = {
-                    regions: currentRegions,
-                    categories: currentCategories,
-                    keywords: keywords,
-                    isSearching: isSearching,
-                    aiFilter: currentAiFilter
-                };
-
-                try {
-                    await setCloudItem('kufar_app_state', JSON.stringify(dataToSend))
-                } catch (e) { 
-                    console.error("Не удалось сохранить в CloudStorage:", e);
-                }
+                await saveCurrentState();
 
                 if (isSearching) {
                     btn.textContent = 'Остановить поиск';
@@ -1070,6 +1054,26 @@
                 });
             }
 
+           async function saveCurrentState() {
+                const currentRegions = getSelectedRegions();
+                const currentCategories = getSelectedCategories();
+                const currentAiFilter = document.getElementById('ai-filter').checked;
+
+                const dataToSend = {
+                    regions: currentRegions,
+                    categories: currentCategories,
+                    keywords: keywords,
+                    isSearching: isSearching,
+                    aiFilter: currentAiFilter
+                };
+
+                try {
+                    await setCloudItem('kufar_app_state', JSON.stringify(dataToSend))
+                } catch (e) { 
+                    console.error("Не удалось сохранить в CloudStorage:", e);
+                }
+           }
+
             function openScreen(screenId) {
                 document.getElementById('main-screen').style.display = 'none';
                 document.getElementById('regions-screen').style.display = 'none';
@@ -1082,7 +1086,7 @@
 
             let keywords = []
 
-            function saveKeywords() {
+            async function saveKeywords() {
                 const input = document.getElementById('keywords-input');
                 const text = input.value.trim();
 
@@ -1099,6 +1103,7 @@
 
                 input.value = '';
                 renderKeywords();
+                await saveCurrentState();
                 
             }
 
@@ -1121,14 +1126,16 @@
                 });
             }
 
-            function removeKeyword(index) {
+            async function removeKeyword(index) {
                 keywords.splice(index, 1);
                 renderKeywords();
+                await saveCurrentState();
             }
 
-            function resetKeywords() {
-                keywords = []
-                renderKeywords()
+            async function resetKeywords() {
+                keywords = [];
+                renderKeywords();
+                await saveCurrentState();
             }
 
             function initRegionCheckboxes() {
@@ -1248,7 +1255,7 @@
    
                 const allCategoriesCb = document.querySelector('#categories-screen > div > label > input[type="checkbox"]');
                 if (allCategoriesCb && allCategoriesCb.checked) {
-                    return ['Все категории'];
+                    return ['Искать по всем категориям'];
                 }
 
                 const selected = [];
