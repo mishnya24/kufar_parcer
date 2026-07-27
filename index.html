@@ -929,7 +929,7 @@
 
             function setCloudItem(key, value) {
                 return new Promise((resolve, reject) => {
-                    tg.CloudStorage.setItem(key, value, (err, success) => {
+                    tg.CloudStorage.setItem(key, value, (error, success) => {
                         if (error) reject(error);
                         else resolve(success);
                     });
@@ -938,7 +938,7 @@
 
             function getCloudItem(key) {
                 return new Promise((resolve, reject) => {
-                    tg.CloudStorage.getItem(key, (err, success) => {
+                    tg.CloudStorage.getItem(key, (error, success) => {
                         if (error) reject(error);
                         else resolve(success);
                     });
