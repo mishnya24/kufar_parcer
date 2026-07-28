@@ -6,85 +6,217 @@
         <title>Настройки</title>
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <style>
+            /* ==========================================================
+               DESIGN TOKENS
+               ========================================================== */
             :root {
+                    /* Telegram theme variables — overridden automatically
+                       by telegram-web-app.js on real TG clients */
                     --tg-theme-bg-color: #ffffff;
                     --tg-theme-secondary-bg-color: #f4f4f5;
-                    --tg-theme-text-color: #000000;
+                    --tg-theme-text-color: #0f0f10;
                     --tg-theme-hint-color: #8e8e93;
                     --tg-theme-link-color: #2481cc;
                     --tg-theme-button-color: #2481cc;
                     --tg-theme-button-text-color: #ffffff;
+                    --tg-theme-destructive-text-color: #ff3b30;
+
+                    /* App accents (independent of TG theme) */
+                    --accent-success: #34c759;
+                    --accent-danger: #ff3b30;
+                    --accent-success-bg: rgba(52, 199, 89, 0.12);
+                    --accent-danger-bg: rgba(255, 59, 48, 0.1);
+
+                    /* Radii */
+                    --radius-lg: 16px;
+                    --radius-md: 14px;
+                    --radius-sm: 10px;
+                    --radius-pill: 999px;
+
+                    /* Spacing */
+                    --gap-xs: 6px;
+                    --gap-sm: 10px;
+                    --gap-md: 14px;
+                    --gap-lg: 20px;
+
+                    /* Motion */
+                    --ease-native: cubic-bezier(0.2, 0.8, 0.2, 1);
+                    --dur-fast: 0.15s;
+                    --dur-mid: 0.25s;
+
+                    /* Elevation */
+                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05);
+                    --shadow-card-active: 0 1px 1px rgba(0, 0, 0, 0.04);
+                    --border-hairline: rgba(127, 127, 127, 0.14);
             }
-        
+
+            /* Stylish dark fallback for regular browsers.
+               Telegram overrides the vars above directly on <html>/<body>,
+               so this block only applies outside of Telegram. */
+            @media (prefers-color-scheme: dark) {
+                    :root {
+                            --tg-theme-bg-color: #0e0e10;
+                            --tg-theme-secondary-bg-color: #1c1c1f;
+                            --tg-theme-text-color: #f5f5f7;
+                            --tg-theme-hint-color: #8d8d93;
+                            --tg-theme-link-color: #6ab7ff;
+                            --tg-theme-button-color: #2f8ff0;
+                            --tg-theme-button-text-color: #ffffff;
+                            --border-hairline: rgba(255, 255, 255, 0.08);
+                            --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.35);
+                    }
+            }
+
+            /* ==========================================================
+               RESET / BASE
+               ========================================================== */
+            * {
+                    box-sizing: border-box;
+                    -webkit-tap-highlight-color: transparent;
+            }
+
             body {
                     margin: 0;
                     padding: 16px;
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
                     background-color: var(--tg-theme-bg-color);
                     color: var(--tg-theme-text-color);
+                    -webkit-font-smoothing: antialiased;
                     -webkit-tap-highlight-color: transparent;
                     -webkit-user-select: none;
                     user-select: none;
+                    transition: background-color var(--dur-mid) var(--ease-native), color var(--dur-mid) var(--ease-native);
             }
-        
+
             h1 {
                     font-size: 22px;
                     font-weight: 700;
-                    margin: 0 0 6px 0;
+                    letter-spacing: -0.02em;
+                    margin: 4px 0 6px 0;
             }
-        
+
             h2 {
                     font-size: 18px;
                     font-weight: 600;
-                    margin: 12px 0 16px 0;
+                    letter-spacing: -0.01em;
+                    margin: 4px 0 16px 0;
             }
-        
+
             p {
                     color: var(--tg-theme-hint-color);
                     font-size: 14px;
+                    line-height: 1.4;
                     margin: 0 0 16px 0;
             }
-        
+
+            /* ==========================================================
+               BUTTONS
+               ========================================================== */
             button {
                     width: 100%;
                     padding: 14px 16px;
                     font-size: 15px;
                     font-weight: 500;
+                    font-family: inherit;
                     border: none;
-                    border-radius: 12px;
+                    border-radius: var(--radius-md);
                     background-color: var(--tg-theme-secondary-bg-color);
                     color: var(--tg-theme-text-color);
                     cursor: pointer;
                     text-align: left;
                     box-sizing: border-box;
-                    transition: opacity 0.15s ease, transform 0.15s ease;
+                    box-shadow: var(--shadow-card);
+                    transition:
+                            transform var(--dur-fast) var(--ease-native),
+                            opacity var(--dur-fast) var(--ease-native),
+                            box-shadow var(--dur-fast) var(--ease-native),
+                            background-color var(--dur-fast) var(--ease-native);
                     margin-bottom: 8px;
+                    -webkit-tap-highlight-color: transparent;
+                    -webkit-user-select: none;
+                    user-select: none;
             }
-        
+
+            @media (hover: hover) {
+                    button:hover {
+                            transform: translateY(-1px);
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07);
+                    }
+            }
+
             button:active {
-                    opacity: 0.7;
-                    transform: scale(0.99);
+                    opacity: 0.75;
+                    transform: scale(0.98);
+                    box-shadow: var(--shadow-card-active);
             }
-        
+
             .btn-back {
                     width: auto;
-                    display: inline-block;
-                    padding: 6px 0;
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 6px 2px;
                     margin-bottom: 8px;
                     font-size: 15px;
                     color: var(--tg-theme-link-color);
                     background: transparent;
                     font-weight: 500;
+                    box-shadow: none;
             }
-        
+
+            @media (hover: hover) {
+                    .btn-back:hover {
+                            transform: translateY(0);
+                            box-shadow: none;
+                            opacity: 0.8;
+                    }
+            }
+
+            .btn-back:active {
+                    opacity: 0.5;
+                    transform: scale(0.97);
+                    box-shadow: none;
+            }
+
+            .btn-danger {
+                    color: var(--accent-danger);
+                    background-color: var(--accent-danger-bg);
+                    text-align: center;
+                    box-shadow: none;
+            }
+
+            .btn-start {
+                    background-color: var(--accent-success) !important;
+                    color: #ffffff !important;
+                    text-align: center;
+                    font-weight: 600;
+                    box-shadow: 0 4px 14px rgba(52, 199, 89, 0.3);
+            }
+
+            .btn-stop {
+                    background-color: var(--accent-danger) !important;
+                    color: #ffffff !important;
+                    text-align: center;
+                    font-weight: 600;
+                    box-shadow: 0 4px 14px rgba(255, 59, 48, 0.3);
+            }
+
+            /* ==========================================================
+               ACCORDION (details / summary)
+               ========================================================== */
             details {
                     background-color: var(--tg-theme-secondary-bg-color);
-                    border-radius: 12px;
+                    border-radius: var(--radius-md);
                     padding: 12px 16px;
                     margin-bottom: 8px;
                     box-sizing: border-box;
+                    box-shadow: var(--shadow-card);
+                    transition: box-shadow var(--dur-fast) var(--ease-native);
             }
-        
+
+            details[open] {
+                    box-shadow: var(--shadow-card-active);
+            }
+
             summary {
                     font-size: 15px;
                     font-weight: 500;
@@ -94,32 +226,44 @@
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
+                    -webkit-tap-highlight-color: transparent;
+                    -webkit-user-select: none;
+                    user-select: none;
+                    transition: opacity var(--dur-fast) var(--ease-native);
             }
-        
+
+            summary:active {
+                    opacity: 0.6;
+            }
+
             summary::-webkit-details-marker {
                     display: none;
             }
-        
+
             summary::after {
                     content: '›';
-                    font-size: 18px;
+                    font-size: 20px;
+                    font-weight: 500;
                     color: var(--tg-theme-hint-color);
-                    transition: transform 0.2s ease;
+                    transition: transform var(--dur-mid) var(--ease-native);
             }
-        
+
             details[open] summary::after {
                     transform: rotate(90deg);
             }
-        
+
             details > div {
                     margin-top: 12px;
                     padding-top: 8px;
-                    border-top: 1px solid rgba(127, 127, 127, 0.15);
+                    border-top: 1px solid var(--border-hairline);
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
             }
-        
+
+            /* ==========================================================
+               FORM CONTROLS
+               ========================================================== */
             label {
                     display: flex;
                     align-items: center;
@@ -127,72 +271,134 @@
                     font-size: 15px;
                     cursor: pointer;
                     line-height: 1.3;
+                    -webkit-tap-highlight-color: transparent;
+                    -webkit-user-select: none;
+                    user-select: none;
+                    transition: opacity var(--dur-fast) var(--ease-native);
             }
-        
+
+            label:active {
+                    opacity: 0.6;
+            }
+
             input[type="checkbox"] {
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 6px;
+                    appearance: none;
+                    -webkit-appearance: none;
+                    width: 22px;
+                    height: 22px;
+                    min-width: 22px;
+                    border-radius: 7px;
+                    border: 1.5px solid var(--border-hairline);
+                    background-color: var(--tg-theme-bg-color);
                     accent-color: var(--tg-theme-button-color);
                     cursor: pointer;
+                    position: relative;
+                    transition:
+                            background-color var(--dur-fast) var(--ease-native),
+                            border-color var(--dur-fast) var(--ease-native),
+                            transform var(--dur-fast) var(--ease-native);
             }
-        
+
+            input[type="checkbox"]:checked {
+                    background-color: var(--tg-theme-button-color);
+                    border-color: var(--tg-theme-button-color);
+            }
+
+            input[type="checkbox"]:checked::after {
+                    content: '';
+                    position: absolute;
+                    left: 7px;
+                    top: 3px;
+                    width: 5px;
+                    height: 10px;
+                    border: solid var(--tg-theme-button-text-color);
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg);
+            }
+
+            input[type="checkbox"]:active {
+                    transform: scale(0.9);
+            }
+
             input[type="text"] {
                     width: 100%;
-                    padding: 12px 14px;
-                    border: 1px solid rgba(127, 127, 127, 0.2);
-                    border-radius: 10px;
+                    padding: 13px 14px;
+                    border: 1.5px solid var(--border-hairline);
+                    border-radius: var(--radius-sm);
                     background-color: var(--tg-theme-secondary-bg-color);
                     color: var(--tg-theme-text-color);
                     box-sizing: border-box;
                     font-size: 15px;
+                    font-family: inherit;
                     outline: none;
                     margin-bottom: 10px;
+                    -webkit-user-select: text;
+                    user-select: text;
+                    transition: border-color var(--dur-fast) var(--ease-native), box-shadow var(--dur-fast) var(--ease-native);
             }
-        
+
+            input[type="text"]::placeholder {
+                    color: var(--tg-theme-hint-color);
+            }
+
             input[type="text"]:focus {
                     border-color: var(--tg-theme-button-color);
+                    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tg-theme-button-color) 18%, transparent);
             }
-        
+
+            /* ==========================================================
+               KEYWORDS CHIPS
+               ========================================================== */
             #keywords-list {
                     display: flex;
                     flex-wrap: wrap;
                     gap: 8px;
                     margin: 10px 0 16px 0;
             }
-        
+
             #keywords-list span {
                     display: inline-flex;
                     align-items: center;
                     gap: 6px;
                     background-color: var(--tg-theme-secondary-bg-color);
-                    padding: 6px 12px;
-                    border-radius: 16px;
+                    padding: 6px 10px 6px 14px;
+                    border-radius: var(--radius-pill);
                     font-size: 14px;
+                    box-shadow: var(--shadow-card);
+                    transition: transform var(--dur-fast) var(--ease-native), opacity var(--dur-fast) var(--ease-native);
             }
-        
+
+            #keywords-list span:active {
+                    transform: scale(0.96);
+            }
+
             #keywords-list button {
                     width: auto;
-                    padding: 0;
+                    padding: 2px;
                     margin: 0;
                     background: transparent;
                     color: var(--tg-theme-hint-color);
                     font-size: 16px;
                     line-height: 1;
-            }
-        
-            .btn-danger {
-                    color: #ff3b30;
-                    background-color: transparent;
-                    text-align: center;
+                    box-shadow: none;
             }
 
+            #keywords-list button:active {
+                    opacity: 0.5;
+                    transform: scale(0.85);
+                    color: var(--accent-danger);
+            }
+
+            /* ==========================================================
+               SUMMARY CARDS
+               ========================================================== */
             .summary-card {
                     background-color: var(--tg-theme-secondary-bg-color);
-                    border-radius: 12px;
+                    border-radius: var(--radius-md);
                     padding: 14px 16px;
                     margin-bottom: 12px;
-            }   
+                    box-shadow: var(--shadow-card);
+            }
 
             .summary-card-title {
                     font-size: 15px;
@@ -214,26 +420,13 @@
                     border-radius: 8px;
                     font-size: 13px;
                     font-weight: 500;
-                    border: 1px solid rgba(127, 127, 127, 0.15);
+                    border: 1px solid var(--border-hairline);
             }
 
             .empty-text {
                     color: var(--tg-theme-hint-color);
                     font-size: 14px;
-            }
-
-            .btn-start {
-                    background-color: #34c759 !important; /* Зелёный */
-                    color: #ffffff !important;
-                    text-align: center;
-                    font-weight: 600;
-            }
-
-            .btn-stop {
-                    background-color: #ff3b30 !important; /* Красный */
-                    color: #ffffff !important;
-                    text-align: center;
-                    font-weight: 600;
+                    font-style: normal;
             }
         </style>
     </head>
@@ -490,7 +683,7 @@
                     </div>
                 </details>
 
-                
+        
             </div>
         </div>
 
@@ -1054,7 +1247,7 @@
                 });
             }
 
-           async function saveCurrentState() {
+            async function saveCurrentState() {
                 const currentRegions = getSelectedRegions();
                 const currentCategories = getSelectedCategories();
                 const currentAiFilter = document.getElementById('ai-filter').checked;
@@ -1075,6 +1268,9 @@
            }
 
             function openScreen(screenId) {
+
+                saveCurrentState().catch(e => console.error("Ошибка автосохранения:", e));
+
                 document.getElementById('main-screen').style.display = 'none';
                 document.getElementById('regions-screen').style.display = 'none';
                 document.getElementById('categories-screen').style.display = 'none';
