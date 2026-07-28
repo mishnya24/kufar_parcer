@@ -1,432 +1,393 @@
 <!DOCTYPE html>
-<html lang='ru'>
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
-        <meta name='viewport' content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>Настройки</title>
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
         <style>
-            /* ==========================================================
-               DESIGN TOKENS
-               ========================================================== */
             :root {
-                    /* Telegram theme variables — overridden automatically
-                       by telegram-web-app.js on real TG clients */
-                    --tg-theme-bg-color: #ffffff;
-                    --tg-theme-secondary-bg-color: #f4f4f5;
-                    --tg-theme-text-color: #0f0f10;
-                    --tg-theme-hint-color: #8e8e93;
-                    --tg-theme-link-color: #2481cc;
-                    --tg-theme-button-color: #2481cc;
-                    --tg-theme-button-text-color: #ffffff;
-                    --tg-theme-destructive-text-color: #ff3b30;
+                --tg-theme-bg-color: #ffffff;
+                --tg-theme-secondary-bg-color: #f4f4f5;
+                --tg-theme-text-color: #0f0f10;
+                --tg-theme-hint-color: #8e8e93;
+                --tg-theme-link-color: #2481cc;
+                --tg-theme-button-color: #2481cc;
+                --tg-theme-button-text-color: #ffffff;
+                --tg-theme-destructive-text-color: #ff3b30;
 
-                    /* App accents (independent of TG theme) */
-                    --accent-success: #34c759;
-                    --accent-danger: #ff3b30;
-                    --accent-success-bg: rgba(52, 199, 89, 0.12);
-                    --accent-danger-bg: rgba(255, 59, 48, 0.1);
+                --accent-success: #34c759;
+                --accent-danger: #ff3b30;
+                --accent-success-bg: rgba(52, 199, 89, 0.12);
+                --accent-danger-bg: rgba(255, 59, 48, 0.1);
 
-                    /* Radii */
-                    --radius-lg: 16px;
-                    --radius-md: 14px;
-                    --radius-sm: 10px;
-                    --radius-pill: 999px;
+                --radius-lg: 16px;
+                --radius-md: 14px;
+                --radius-sm: 10px;
+                --radius-pill: 999px;
 
-                    /* Spacing */
-                    --gap-xs: 6px;
-                    --gap-sm: 10px;
-                    --gap-md: 14px;
-                    --gap-lg: 20px;
+                --gap-xs: 6px;
+                --gap-sm: 10px;
+                --gap-md: 14px;
+                --gap-lg: 20px;
 
-                    /* Motion */
-                    --ease-native: cubic-bezier(0.2, 0.8, 0.2, 1);
-                    --dur-fast: 0.15s;
-                    --dur-mid: 0.25s;
+                --ease-native: cubic-bezier(0.2, 0.8, 0.2, 1);
+                --dur-fast: 0.15s;
+                --dur-mid: 0.25s;
 
-                    /* Elevation */
-                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05);
-                    --shadow-card-active: 0 1px 1px rgba(0, 0, 0, 0.04);
-                    --border-hairline: rgba(127, 127, 127, 0.14);
+                --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05);
+                --shadow-card-active: 0 1px 1px rgba(0, 0, 0, 0.04);
+                --border-hairline: rgba(127, 127, 127, 0.14);
             }
 
-            /* Stylish dark fallback for regular browsers.
-               Telegram overrides the vars above directly on <html>/<body>,
-               so this block only applies outside of Telegram. */
             @media (prefers-color-scheme: dark) {
-                    :root {
-                            --tg-theme-bg-color: #0e0e10;
-                            --tg-theme-secondary-bg-color: #1c1c1f;
-                            --tg-theme-text-color: #f5f5f7;
-                            --tg-theme-hint-color: #8d8d93;
-                            --tg-theme-link-color: #6ab7ff;
-                            --tg-theme-button-color: #2f8ff0;
-                            --tg-theme-button-text-color: #ffffff;
-                            --border-hairline: rgba(255, 255, 255, 0.08);
-                            --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.35);
-                    }
+                :root {
+                    --tg-theme-bg-color: #0e0e10;
+                    --tg-theme-secondary-bg-color: #1c1c1f;
+                    --tg-theme-text-color: #f5f5f7;
+                    --tg-theme-hint-color: #8d8d93;
+                    --tg-theme-link-color: #6ab7ff;
+                    --tg-theme-button-color: #2f8ff0;
+                    --tg-theme-button-text-color: #ffffff;
+                    --border-hairline: rgba(255, 255, 255, 0.08);
+                    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.35);
+                }
             }
 
-            /* ==========================================================
-               RESET / BASE
-               ========================================================== */
             * {
-                    box-sizing: border-box;
-                    -webkit-tap-highlight-color: transparent;
+                box-sizing: border-box;
+                -webkit-tap-highlight-color: transparent;
             }
 
             body {
-                    margin: 0;
-                    padding: 16px;
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-                    background-color: var(--tg-theme-bg-color);
-                    color: var(--tg-theme-text-color);
-                    -webkit-font-smoothing: antialiased;
-                    -webkit-tap-highlight-color: transparent;
-                    -webkit-user-select: none;
-                    user-select: none;
-                    transition: background-color var(--dur-mid) var(--ease-native), color var(--dur-mid) var(--ease-native);
+                margin: 0;
+                padding: 16px;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                background-color: var(--tg-theme-bg-color);
+                color: var(--tg-theme-text-color);
+                -webkit-font-smoothing: antialiased;
+                -webkit-tap-highlight-color: transparent;
+                -webkit-user-select: none;
+                user-select: none;
+                transition: background-color var(--dur-mid) var(--ease-native), color var(--dur-mid) var(--ease-native);
             }
 
             h1 {
-                    font-size: 22px;
-                    font-weight: 700;
-                    letter-spacing: -0.02em;
-                    margin: 4px 0 6px 0;
+                font-size: 22px;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                margin: 4px 0 6px 0;
             }
 
             h2 {
-                    font-size: 18px;
-                    font-weight: 600;
-                    letter-spacing: -0.01em;
-                    margin: 4px 0 16px 0;
+                font-size: 18px;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+                margin: 4px 0 16px 0;
             }
 
             p {
-                    color: var(--tg-theme-hint-color);
-                    font-size: 14px;
-                    line-height: 1.4;
-                    margin: 0 0 16px 0;
+                color: var(--tg-theme-hint-color);
+                font-size: 14px;
+                line-height: 1.4;
+                margin: 0 0 16px 0;
             }
 
-            /* ==========================================================
-               BUTTONS
-               ========================================================== */
             button {
-                    width: 100%;
-                    padding: 14px 16px;
-                    font-size: 15px;
-                    font-weight: 500;
-                    font-family: inherit;
-                    border: none;
-                    border-radius: var(--radius-md);
-                    background-color: var(--tg-theme-secondary-bg-color);
-                    color: var(--tg-theme-text-color);
-                    cursor: pointer;
-                    text-align: left;
-                    box-sizing: border-box;
-                    box-shadow: var(--shadow-card);
-                    transition:
-                            transform var(--dur-fast) var(--ease-native),
-                            opacity var(--dur-fast) var(--ease-native),
-                            box-shadow var(--dur-fast) var(--ease-native),
-                            background-color var(--dur-fast) var(--ease-native);
-                    margin-bottom: 8px;
-                    -webkit-tap-highlight-color: transparent;
-                    -webkit-user-select: none;
-                    user-select: none;
+                width: 100%;
+                padding: 14px 16px;
+                font-size: 15px;
+                font-weight: 500;
+                font-family: inherit;
+                border: none;
+                border-radius: var(--radius-md);
+                background-color: var(--tg-theme-secondary-bg-color);
+                color: var(--tg-theme-text-color);
+                cursor: pointer;
+                text-align: left;
+                box-sizing: border-box;
+                box-shadow: var(--shadow-card);
+                transition:
+                    transform var(--dur-fast) var(--ease-native),
+                    opacity var(--dur-fast) var(--ease-native),
+                    box-shadow var(--dur-fast) var(--ease-native),
+                    background-color var(--dur-fast) var(--ease-native);
+                margin-bottom: 8px;
+                -webkit-tap-highlight-color: transparent;
+                -webkit-user-select: none;
+                user-select: none;
             }
 
             @media (hover: hover) {
-                    button:hover {
-                            transform: translateY(-1px);
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07);
-                    }
+                button:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.07);
+                }
             }
 
             button:active {
-                    opacity: 0.75;
-                    transform: scale(0.98);
-                    box-shadow: var(--shadow-card-active);
+                opacity: 0.75;
+                transform: scale(0.98);
+                box-shadow: var(--shadow-card-active);
             }
 
             .btn-back {
-                    width: auto;
-                    display: inline-flex;
-                    align-items: center;
-                    padding: 6px 2px;
-                    margin-bottom: 8px;
-                    font-size: 15px;
-                    color: var(--tg-theme-link-color);
-                    background: transparent;
-                    font-weight: 500;
-                    box-shadow: none;
+                width: auto;
+                display: inline-flex;
+                align-items: center;
+                padding: 6px 2px;
+                margin-bottom: 8px;
+                font-size: 15px;
+                color: var(--tg-theme-link-color);
+                background: transparent;
+                font-weight: 500;
+                box-shadow: none;
             }
 
             @media (hover: hover) {
-                    .btn-back:hover {
-                            transform: translateY(0);
-                            box-shadow: none;
-                            opacity: 0.8;
-                    }
+                .btn-back:hover {
+                    transform: translateY(0);
+                    box-shadow: none;
+                    opacity: 0.8;
+                }
             }
 
             .btn-back:active {
-                    opacity: 0.5;
-                    transform: scale(0.97);
-                    box-shadow: none;
+                opacity: 0.5;
+                transform: scale(0.97);
+                box-shadow: none;
             }
 
             .btn-danger {
-                    color: var(--accent-danger);
-                    background-color: var(--accent-danger-bg);
-                    text-align: center;
-                    box-shadow: none;
+                color: var(--accent-danger);
+                background-color: var(--accent-danger-bg);
+                text-align: center;
+                box-shadow: none;
             }
 
             .btn-start {
-                    background-color: var(--accent-success) !important;
-                    color: #ffffff !important;
-                    text-align: center;
-                    font-weight: 600;
-                    box-shadow: 0 4px 14px rgba(52, 199, 89, 0.3);
+                background-color: var(--accent-success) !important;
+                color: #ffffff !important;
+                text-align: center;
+                font-weight: 600;
+                box-shadow: 0 4px 14px rgba(52, 199, 89, 0.3);
             }
 
-            .btn-stop {
-                    background-color: var(--accent-danger) !important;
-                    color: #ffffff !important;
-                    text-align: center;
-                    font-weight: 600;
-                    box-shadow: 0 4px 14px rgba(255, 59, 48, 0.3);
-            }
-
-            /* ==========================================================
-               ACCORDION (details / summary)
-               ========================================================== */
             details {
-                    background-color: var(--tg-theme-secondary-bg-color);
-                    border-radius: var(--radius-md);
-                    padding: 12px 16px;
-                    margin-bottom: 8px;
-                    box-sizing: border-box;
-                    box-shadow: var(--shadow-card);
-                    transition: box-shadow var(--dur-fast) var(--ease-native);
+                background-color: var(--tg-theme-secondary-bg-color);
+                border-radius: var(--radius-md);
+                padding: 12px 16px;
+                margin-bottom: 8px;
+                box-sizing: border-box;
+                box-shadow: var(--shadow-card);
+                transition: box-shadow var(--dur-fast) var(--ease-native);
             }
 
             details[open] {
-                    box-shadow: var(--shadow-card-active);
+                box-shadow: var(--shadow-card-active);
             }
 
             summary {
-                    font-size: 15px;
-                    font-weight: 500;
-                    cursor: pointer;
-                    outline: none;
-                    list-style: none;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    -webkit-tap-highlight-color: transparent;
-                    -webkit-user-select: none;
-                    user-select: none;
-                    transition: opacity var(--dur-fast) var(--ease-native);
+                font-size: 15px;
+                font-weight: 500;
+                cursor: pointer;
+                outline: none;
+                list-style: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                -webkit-tap-highlight-color: transparent;
+                -webkit-user-select: none;
+                user-select: none;
+                transition: opacity var(--dur-fast) var(--ease-native);
             }
 
             summary:active {
-                    opacity: 0.6;
+                opacity: 0.6;
             }
 
             summary::-webkit-details-marker {
-                    display: none;
+                display: none;
             }
 
             summary::after {
-                    content: '›';
-                    font-size: 20px;
-                    font-weight: 500;
-                    color: var(--tg-theme-hint-color);
-                    transition: transform var(--dur-mid) var(--ease-native);
+                content: '›';
+                font-size: 20px;
+                font-weight: 500;
+                color: var(--tg-theme-hint-color);
+                transition: transform var(--dur-mid) var(--ease-native);
             }
 
             details[open] summary::after {
-                    transform: rotate(90deg);
+                transform: rotate(90deg);
             }
 
             details > div {
-                    margin-top: 12px;
-                    padding-top: 8px;
-                    border-top: 1px solid var(--border-hairline);
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
+                margin-top: 12px;
+                padding-top: 8px;
+                border-top: 1px solid var(--border-hairline);
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
 
-            /* ==========================================================
-               FORM CONTROLS
-               ========================================================== */
             label {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    font-size: 15px;
-                    cursor: pointer;
-                    line-height: 1.3;
-                    -webkit-tap-highlight-color: transparent;
-                    -webkit-user-select: none;
-                    user-select: none;
-                    transition: opacity var(--dur-fast) var(--ease-native);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 15px;
+                cursor: pointer;
+                line-height: 1.3;
+                -webkit-tap-highlight-color: transparent;
+                -webkit-user-select: none;
+                user-select: none;
+                transition: opacity var(--dur-fast) var(--ease-native);
             }
 
             label:active {
-                    opacity: 0.6;
+                opacity: 0.6;
             }
 
             input[type="checkbox"] {
-                    appearance: none;
-                    -webkit-appearance: none;
-                    width: 22px;
-                    height: 22px;
-                    min-width: 22px;
-                    border-radius: 7px;
-                    border: 1.5px solid var(--border-hairline);
-                    background-color: var(--tg-theme-bg-color);
-                    accent-color: var(--tg-theme-button-color);
-                    cursor: pointer;
-                    position: relative;
-                    transition:
-                            background-color var(--dur-fast) var(--ease-native),
-                            border-color var(--dur-fast) var(--ease-native),
-                            transform var(--dur-fast) var(--ease-native);
+                appearance: none;
+                -webkit-appearance: none;
+                width: 22px;
+                height: 22px;
+                min-width: 22px;
+                border-radius: 7px;
+                border: 1.5px solid var(--border-hairline);
+                background-color: var(--tg-theme-bg-color);
+                accent-color: var(--tg-theme-button-color);
+                cursor: pointer;
+                position: relative;
+                transition:
+                    background-color var(--dur-fast) var(--ease-native),
+                    border-color var(--dur-fast) var(--ease-native),
+                    transform var(--dur-fast) var(--ease-native);
             }
 
             input[type="checkbox"]:checked {
-                    background-color: var(--tg-theme-button-color);
-                    border-color: var(--tg-theme-button-color);
+                background-color: var(--tg-theme-button-color);
+                border-color: var(--tg-theme-button-color);
             }
 
             input[type="checkbox"]:checked::after {
-                    content: '';
-                    position: absolute;
-                    left: 7px;
-                    top: 3px;
-                    width: 5px;
-                    height: 10px;
-                    border: solid var(--tg-theme-button-text-color);
-                    border-width: 0 2px 2px 0;
-                    transform: rotate(45deg);
+                content: '';
+                position: absolute;
+                left: 7px;
+                top: 3px;
+                width: 5px;
+                height: 10px;
+                border: solid var(--tg-theme-button-text-color);
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
             }
 
             input[type="checkbox"]:active {
-                    transform: scale(0.9);
+                transform: scale(0.9);
             }
 
             input[type="text"] {
-                    width: 100%;
-                    padding: 13px 14px;
-                    border: 1.5px solid var(--border-hairline);
-                    border-radius: var(--radius-sm);
-                    background-color: var(--tg-theme-secondary-bg-color);
-                    color: var(--tg-theme-text-color);
-                    box-sizing: border-box;
-                    font-size: 15px;
-                    font-family: inherit;
-                    outline: none;
-                    margin-bottom: 10px;
-                    -webkit-user-select: text;
-                    user-select: text;
-                    transition: border-color var(--dur-fast) var(--ease-native), box-shadow var(--dur-fast) var(--ease-native);
+                width: 100%;
+                padding: 13px 14px;
+                border: 1.5px solid var(--border-hairline);
+                border-radius: var(--radius-sm);
+                background-color: var(--tg-theme-secondary-bg-color);
+                color: var(--tg-theme-text-color);
+                box-sizing: border-box;
+                font-size: 15px;
+                font-family: inherit;
+                outline: none;
+                margin-bottom: 10px;
+                -webkit-user-select: text;
+                user-select: text;
+                transition: border-color var(--dur-fast) var(--ease-native), box-shadow var(--dur-fast) var(--ease-native);
             }
 
             input[type="text"]::placeholder {
-                    color: var(--tg-theme-hint-color);
+                color: var(--tg-theme-hint-color);
             }
 
             input[type="text"]:focus {
-                    border-color: var(--tg-theme-button-color);
-                    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tg-theme-button-color) 18%, transparent);
+                border-color: var(--tg-theme-button-color);
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--tg-theme-button-color) 18%, transparent);
             }
 
-            /* ==========================================================
-               KEYWORDS CHIPS
-               ========================================================== */
             #keywords-list {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 8px;
-                    margin: 10px 0 16px 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin: 10px 0 16px 0;
             }
 
             #keywords-list span {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 6px;
-                    background-color: var(--tg-theme-secondary-bg-color);
-                    padding: 6px 10px 6px 14px;
-                    border-radius: var(--radius-pill);
-                    font-size: 14px;
-                    box-shadow: var(--shadow-card);
-                    transition: transform var(--dur-fast) var(--ease-native), opacity var(--dur-fast) var(--ease-native);
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background-color: var(--tg-theme-secondary-bg-color);
+                padding: 6px 10px 6px 14px;
+                border-radius: var(--radius-pill);
+                font-size: 14px;
+                box-shadow: var(--shadow-card);
+                transition: transform var(--dur-fast) var(--ease-native), opacity var(--dur-fast) var(--ease-native);
             }
 
             #keywords-list span:active {
-                    transform: scale(0.96);
+                transform: scale(0.96);
             }
 
             #keywords-list button {
-                    width: auto;
-                    padding: 2px;
-                    margin: 0;
-                    background: transparent;
-                    color: var(--tg-theme-hint-color);
-                    font-size: 16px;
-                    line-height: 1;
-                    box-shadow: none;
+                width: auto;
+                padding: 2px;
+                margin: 0;
+                background: transparent;
+                color: var(--tg-theme-hint-color);
+                font-size: 16px;
+                line-height: 1;
+                box-shadow: none;
             }
 
             #keywords-list button:active {
-                    opacity: 0.5;
-                    transform: scale(0.85);
-                    color: var(--accent-danger);
+                opacity: 0.5;
+                transform: scale(0.85);
+                color: var(--accent-danger);
             }
 
-            /* ==========================================================
-               SUMMARY CARDS
-               ========================================================== */
             .summary-card {
-                    background-color: var(--tg-theme-secondary-bg-color);
-                    border-radius: var(--radius-md);
-                    padding: 14px 16px;
-                    margin-bottom: 12px;
-                    box-shadow: var(--shadow-card);
+                background-color: var(--tg-theme-secondary-bg-color);
+                border-radius: var(--radius-md);
+                padding: 14px 16px;
+                margin-bottom: 12px;
+                box-shadow: var(--shadow-card);
             }
 
             .summary-card-title {
-                    font-size: 15px;
-                    font-weight: 600;
-                    margin-bottom: 10px;
-                    color: var(--tg-theme-text-color);
+                font-size: 15px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: var(--tg-theme-text-color);
             }
 
             .tags-container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 6px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
             }
 
             .badge {
-                    background-color: var(--tg-theme-bg-color);
-                    color: var(--tg-theme-text-color);
-                    padding: 6px 10px;
-                    border-radius: 8px;
-                    font-size: 13px;
-                    font-weight: 500;
-                    border: 1px solid var(--border-hairline);
+                background-color: var(--tg-theme-bg-color);
+                color: var(--tg-theme-text-color);
+                padding: 6px 10px;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 500;
+                border: 1px solid var(--border-hairline);
             }
 
             .empty-text {
-                    color: var(--tg-theme-hint-color);
-                    font-size: 14px;
-                    font-style: normal;
+                color: var(--tg-theme-hint-color);
+                font-size: 14px;
+                font-style: normal;
             }
         </style>
     </head>
@@ -435,16 +396,13 @@
             <h1>Настройки парсера</h1>
             <p>Выберите нужные настройки ниже</p>
             <div>
-                <button onclick="openScreen('regions-screen')">Выбрать ключевые регионы</button><br>
-                <button onclick="openScreen('categories-screen')">Выбрать категории</button><br>
-                <button onclick="openScreen('keywords-screen')">Ключевые слова для поиска</button><br>
+                <button onclick="openScreen('regions-screen')">Выбрать ключевые регионы</button>
+                <button onclick="openScreen('categories-screen')">Выбрать категории</button>
+                <button onclick="openScreen('keywords-screen')">Ключевые слова для поиска</button>
                 <button onclick="openUserSettings()">Мои настройки</button>
-                <button id="search-toggle-btn" class="btn-start" onclick="toggleSearch()">Начать поиск</button>
+                <button class="btn-start" onclick="saveAndClose()">💾 Сохранить настройки</button>
             </div>
-
         </div>
-
-
 
         <div id="regions-screen" style="display: none;">
             <button class='btn-back' onclick="openScreen('main-screen')">← Назад</button>
@@ -663,7 +621,6 @@
                         <label><input type='checkbox'> Чашники</label><br>
                         <label><input type='checkbox'> Шарковщина</label><br>
                         <label><input type='checkbox'> Шумилино</label><br>
-                        
                     </div>
                 </details>
 
@@ -682,12 +639,8 @@
                         <label><input type='checkbox'> Центральный район</label><br>
                     </div>
                 </details>
-
-        
             </div>
         </div>
-
-       
 
         <div id="categories-screen" style="display: none;">
             <button class='btn-back' onclick="openScreen('main-screen')">← Назад</button>
@@ -1061,8 +1014,6 @@
             </div>
         </div>
 
-
-
         <div id="keywords-screen" style="display: none;">
             <button class='btn-back' onclick="openScreen('main-screen')">← Назад</button>
             <h2>Ключевые слова</h2>
@@ -1085,7 +1036,7 @@
                 <em>пока не заданы</em>
             </div>
 
-            <button class='btn-danger'onclick="resetKeywords()">Сбросить ключевые слова</button>
+            <button class='btn-danger' onclick="resetKeywords()">Сбросить ключевые слова</button>
         </div>
 
         <div id="usersettings-screen" style="display: none">
@@ -1138,47 +1089,24 @@
                 });
             }
 
-
-
-            let isSearching = false
-
-            async function toggleSearch() {
-                const btn = document.getElementById('search-toggle-btn');
-                isSearching = !isSearching;
-
+            async function saveAndClose() {
                 saveCurrentState().catch(e => console.error("Ошибка CloudStorage:", e));
 
-                if (isSearching) {
-                    btn.textContent = 'Остановить поиск';
-                    btn.className = 'btn-stop';
+                const DATA = {
+                    action: 'save-settings',
+                    regions: getSelectedRegions(),
+                    categories: getSelectedCategories(),
+                    keywords: keywords,
+                    aiFilter: document.getElementById('ai-filter').checked
+                };
 
-                    const DATA = {
-                        action: 'start-search',
-                        regions: getSelectedRegions(),
-                        categories: getSelectedCategories(),
-                        keywords: keywords,
-                        aiFilter: document.getElementById('ai-filter').checked
-                    };
-
-                    tg.sendData(JSON.stringify(DATA));
-                } else {
-                    btn.textContent = 'Начать поиск';
-                    btn.className = 'btn-start';
-
-                    const DATA = {
-                        action: 'stop-searching'
-                    };
-
-                    tg.sendData(JSON.stringify(DATA));
-                }
-
-
+                tg.sendData(JSON.stringify(DATA));
             }
 
             async function loadSavedState() {
                 const rawData = await getCloudItem('kufar_app_state');
 
-                if (!rawData) return ;
+                if (!rawData) return;
 
                 const state = JSON.parse(rawData);
 
@@ -1188,14 +1116,7 @@
                 }
 
                 if (typeof state.aiFilter === 'boolean') {
-                    document.getElementById('ai-filter').checked = state.aiFilter
-                }
-
-                if (state.isSearching) {
-                    isSearching = true;
-                    const btn = document.getElementById('search-toggle-btn');
-                    btn.textContent = 'Остановить поиск';
-                    btn.className = 'btn-stop';
+                    document.getElementById('ai-filter').checked = state.aiFilter;
                 }
 
                 if (Array.isArray(state.regions)) {
@@ -1222,7 +1143,7 @@
                     }
                 }
 
-                const detailsBlock = container.querySelectorAll('details')
+                const detailsBlock = container.querySelectorAll('details');
                 detailsBlock.forEach(details => {
                     const summaryText = details.querySelector('summary').textContent.trim();
                     const allCb = details.querySelectorAll('input[type="checkbox"]');
@@ -1231,7 +1152,7 @@
                     if (savedList.includes(summaryText)) {
                         if (masterCb) {
                             masterCb.checked = true;
-                            masterCb.dispatchEvent(new Event('change'))
+                            masterCb.dispatchEvent(new Event('change'));
                         }
                     } else {
                         const subCb = Array.from(allCb).slice(1);
@@ -1240,7 +1161,7 @@
                             const tetxCb = cb.parentElement.textContent.trim();
                             if (savedList.includes(tetxCb)) {
                                 cb.checked = true;
-                                cb.dispatchEvent(new Event('change'))
+                                cb.dispatchEvent(new Event('change'));
                             }
                         });
                     }
@@ -1256,19 +1177,17 @@
                     regions: currentRegions,
                     categories: currentCategories,
                     keywords: keywords,
-                    isSearching: isSearching,
                     aiFilter: currentAiFilter
                 };
 
                 try {
-                    await setCloudItem('kufar_app_state', JSON.stringify(dataToSend))
+                    await setCloudItem('kufar_app_state', JSON.stringify(dataToSend));
                 } catch (e) { 
                     console.error("Не удалось сохранить в CloudStorage:", e);
                 }
-           }
+            }
 
             function openScreen(screenId) {
-
                 saveCurrentState().catch(e => console.error("Ошибка автосохранения:", e));
 
                 document.getElementById('main-screen').style.display = 'none';
@@ -1280,7 +1199,7 @@
                 document.getElementById(screenId).style.display = 'block';
             }
 
-            let keywords = []
+            let keywords = [];
 
             async function saveKeywords() {
                 const input = document.getElementById('keywords-input');
@@ -1300,7 +1219,6 @@
                 input.value = '';
                 renderKeywords();
                 await saveCurrentState();
-                
             }
 
             function renderKeywords() {
@@ -1372,7 +1290,6 @@
                     countryCheckbox.checked = isEverythingChecked;
                 }
             }
-            document.addEventListener('DOMContentLoaded', initRegionCheckboxes);
 
             function initCategoryCheckboxes() {
                 const allCategoriesCheckboxes = document.querySelector('#categories-screen > div > label > input[type="checkbox"]');
@@ -1388,18 +1305,18 @@
                         categoriesCheckboxes.forEach(ccb => {
                             ccb.checked = masterCheckbox.checked;
                         });
-                        updateCategoryCheckbox()
+                        updateCategoryCheckbox();
                     });
 
                     categoriesCheckboxes.forEach(ccb => {
                         ccb.addEventListener('change', () => {
                             const areAllcategoriesChecked = categoriesCheckboxes.every(cb => cb.checked);
                             masterCheckbox.checked = areAllcategoriesChecked;
-                            updateCategoryCheckbox()
+                            updateCategoryCheckbox();
                         });
                     });
 
-                    allCategoryCheckbox.push(masterCheckbox, ...categoriesCheckboxes)
+                    allCategoryCheckbox.push(masterCheckbox, ...categoriesCheckboxes);
                 });
 
                 if (allCategoriesCheckboxes) {
@@ -1408,7 +1325,7 @@
                             ccb.checked = allCategoriesCheckboxes.checked;
                         });
                     });
-                };
+                }
                 
                 function updateCategoryCheckbox() {
                     if (!allCategoriesCheckboxes) return;
@@ -1416,7 +1333,6 @@
                     allCategoriesCheckboxes.checked = isEverythingChecked;
                 }
             }
-            document.addEventListener('DOMContentLoaded', initCategoryCheckboxes);
 
             function getSelectedRegions() {
                 const countryCb = document.querySelector('#regions-screen div > label > input[type="checkbox"]');
@@ -1437,10 +1353,9 @@
                     } else {
                         Array.from(allOblCheckbox).slice(1).forEach(cb => {
                             if (cb && cb.checked) {
-                                selected.push(cb.parentElement.textContent.trim())
+                                selected.push(cb.parentElement.textContent.trim());
                             }
                         });
-
                     }
                 });
 
@@ -1448,14 +1363,12 @@
             }
 
             function getSelectedCategories() {
-   
                 const allCategoriesCb = document.querySelector('#categories-screen > div > label > input[type="checkbox"]');
                 if (allCategoriesCb && allCategoriesCb.checked) {
                     return ['Искать по всем категориям'];
                 }
 
                 const selected = [];
-   
                 const categoryBlocks = document.querySelectorAll('#categories-screen details');
 
                 categoryBlocks.forEach(details => {
@@ -1464,14 +1377,11 @@
                     const categoryName = details.querySelector('summary').textContent.trim();
 
                     if (masterCb && masterCb.checked) {
-          
                         selected.push(`${categoryName}`);
                     } else {
-         
                         const subCheckboxes = Array.from(checkboxes).slice(1);
                         subCheckboxes.forEach(cb => {
                             if (cb.checked) {
-                  
                                 selected.push(cb.parentElement.textContent.trim());
                             }
                         });
@@ -1485,7 +1395,7 @@
                 const regions = getSelectedRegions();
                 const regionsContainer = document.getElementById('summary-regions');
                 
-                if (regions.length>0) {
+                if (regions.length > 0) {
                     regionsContainer.innerHTML = regions.map(item => `<span class="badge">${item}</span>`).join('');
                 } else {
                     regionsContainer.innerHTML = '<em class="empty-text">Ничего не выбрано</em>';
@@ -1516,7 +1426,6 @@
             document.addEventListener('DOMContentLoaded', () => {
                 initCategoryCheckboxes();
                 initRegionCheckboxes();
-
                 loadSavedState();
             });
         </script>
