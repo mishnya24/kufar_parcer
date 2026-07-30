@@ -21,7 +21,9 @@
                 --accent-success-bg: rgba(52, 199, 89, 0.12);
                 --accent-danger-bg: rgba(255, 59, 48, 0.1);
 
-                --radius-lg: 16px;
+                --card-bg: #ffffff;
+
+                --radius-lg: 18px;
                 --radius-md: 14px;
                 --radius-sm: 10px;
                 --radius-pill: 999px;
@@ -32,11 +34,13 @@
                 --gap-lg: 20px;
 
                 --ease-native: cubic-bezier(0.2, 0.8, 0.2, 1);
+                --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
                 --dur-fast: 0.15s;
                 --dur-mid: 0.25s;
 
                 --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05);
                 --shadow-card-active: 0 1px 1px rgba(0, 0, 0, 0.04);
+                --shadow-elevated: 0 8px 24px rgba(36, 129, 204, 0.28), 0 2px 6px rgba(0, 0, 0, 0.08);
                 --border-hairline: rgba(127, 127, 127, 0.14);
             }
 
@@ -49,8 +53,10 @@
                     --tg-theme-link-color: #6ab7ff;
                     --tg-theme-button-color: #2f8ff0;
                     --tg-theme-button-text-color: #ffffff;
+                    --card-bg: #1c1c1f;
                     --border-hairline: rgba(255, 255, 255, 0.08);
                     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.35);
+                    --shadow-elevated: 0 10px 26px rgba(47, 143, 240, 0.35), 0 2px 8px rgba(0, 0, 0, 0.4);
                 }
             }
 
@@ -59,9 +65,13 @@
                 -webkit-tap-highlight-color: transparent;
             }
 
+            html {
+                -webkit-text-size-adjust: 100%;
+            }
+
             body {
                 margin: 0;
-                padding: 16px;
+                padding: 16px 16px 32px 16px;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
                 background-color: var(--tg-theme-bg-color);
                 color: var(--tg-theme-text-color);
@@ -73,25 +83,27 @@
             }
 
             h1 {
-                font-size: 22px;
+                font-size: 24px;
                 font-weight: 700;
                 letter-spacing: -0.02em;
-                margin: 4px 0 6px 0;
+                margin: 6px 0 6px 0;
             }
 
             h2 {
-                font-size: 18px;
-                font-weight: 600;
+                font-size: 19px;
+                font-weight: 700;
                 letter-spacing: -0.01em;
-                margin: 4px 0 16px 0;
+                margin: 2px 0 16px 0;
             }
 
             p {
                 color: var(--tg-theme-hint-color);
                 font-size: 14px;
                 line-height: 1.4;
-                margin: 0 0 16px 0;
+                margin: 0 0 18px 0;
             }
+
+            /* ---------- Base buttons ---------- */
 
             button {
                 width: 100%;
@@ -101,7 +113,7 @@
                 font-family: inherit;
                 border: none;
                 border-radius: var(--radius-md);
-                background-color: var(--tg-theme-secondary-bg-color);
+                background-color: var(--card-bg);
                 color: var(--tg-theme-text-color);
                 cursor: pointer;
                 text-align: left;
@@ -131,12 +143,86 @@
                 box-shadow: var(--shadow-card-active);
             }
 
+            /* ---------- Main screen grouped list ---------- */
+
+            #main-screen > div.main-list {
+                background-color: var(--card-bg);
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-card);
+                overflow: hidden;
+                margin-bottom: 18px;
+                padding: 0;
+            }
+
+            .main-list button {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+                margin: 0;
+                padding: 14px 16px;
+                border-radius: 0;
+                background: transparent;
+                box-shadow: none;
+                border-bottom: 1px solid var(--border-hairline);
+                font-weight: 500;
+            }
+
+            .main-list button:last-child {
+                border-bottom: none;
+            }
+
+            @media (hover: hover) {
+                .main-list button:hover {
+                    transform: none;
+                    background-color: color-mix(in srgb, var(--tg-theme-button-color) 6%, transparent);
+                    box-shadow: none;
+                }
+            }
+
+            .main-list button:active {
+                opacity: 1;
+                transform: none;
+                background-color: color-mix(in srgb, var(--tg-theme-button-color) 12%, transparent);
+                box-shadow: none;
+            }
+
+            .row-icon {
+                flex: 0 0 auto;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 17px;
+                border-radius: 9px;
+                background-color: color-mix(in srgb, var(--tg-theme-button-color) 14%, transparent);
+            }
+
+            .row-label {
+                flex: 1 1 auto;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .row-chevron {
+                flex: 0 0 auto;
+                font-size: 19px;
+                font-weight: 500;
+                color: var(--tg-theme-hint-color);
+            }
+
+            /* ---------- Back button ---------- */
+
             .btn-back {
                 width: auto;
                 display: inline-flex;
                 align-items: center;
-                padding: 6px 2px;
-                margin-bottom: 8px;
+                gap: 2px;
+                padding: 6px 4px 6px 0;
+                margin-bottom: 12px;
                 font-size: 15px;
                 color: var(--tg-theme-link-color);
                 background: transparent;
@@ -158,25 +244,47 @@
                 box-shadow: none;
             }
 
+            /* ---------- Danger / Start buttons ---------- */
+
             .btn-danger {
                 color: var(--accent-danger);
                 background-color: var(--accent-danger-bg);
                 text-align: center;
                 box-shadow: none;
+                font-weight: 600;
+            }
+
+            .btn-danger:active {
+                background-color: var(--accent-danger-bg);
+                opacity: 0.6;
             }
 
             .btn-start {
                 background-color: var(--accent-success) !important;
                 color: #ffffff !important;
                 text-align: center;
-                font-weight: 600;
-                box-shadow: 0 4px 14px rgba(52, 199, 89, 0.3);
+                font-weight: 700;
+                font-size: 16px;
+                padding: 16px;
+                box-shadow: 0 6px 18px rgba(52, 199, 89, 0.35);
+                position: sticky;
+                bottom: 12px;
+                z-index: 5;
+                margin-top: 4px;
             }
 
+            .btn-start:active {
+                opacity: 1;
+                transform: scale(0.98);
+                box-shadow: 0 3px 10px rgba(52, 199, 89, 0.3);
+            }
+
+            /* ---------- Accordions ---------- */
+
             details {
-                background-color: var(--tg-theme-secondary-bg-color);
+                background-color: var(--card-bg);
                 border-radius: var(--radius-md);
-                padding: 12px 16px;
+                padding: 13px 16px;
                 margin-bottom: 8px;
                 box-sizing: border-box;
                 box-shadow: var(--shadow-card);
@@ -189,13 +297,14 @@
 
             summary {
                 font-size: 15px;
-                font-weight: 500;
+                font-weight: 600;
                 cursor: pointer;
                 outline: none;
                 list-style: none;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                gap: 10px;
                 -webkit-tap-highlight-color: transparent;
                 -webkit-user-select: none;
                 user-select: none;
@@ -210,12 +319,30 @@
                 display: none;
             }
 
+            summary::before {
+                content: '';
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background-color: var(--tg-theme-button-color);
+                margin-right: -2px;
+                opacity: 0;
+                transform: scale(0.4);
+                transition: opacity var(--dur-fast) var(--ease-native), transform var(--dur-fast) var(--ease-native);
+            }
+
+            details:has(input:checked) summary::before {
+                opacity: 1;
+                transform: scale(1);
+            }
+
             summary::after {
                 content: '›';
                 font-size: 20px;
                 font-weight: 500;
                 color: var(--tg-theme-hint-color);
                 transition: transform var(--dur-mid) var(--ease-native);
+                margin-left: auto;
             }
 
             details[open] summary::after {
@@ -224,12 +351,14 @@
 
             details > div {
                 margin-top: 12px;
-                padding-top: 8px;
+                padding-top: 10px;
                 border-top: 1px solid var(--border-hairline);
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 11px;
             }
+
+            /* ---------- Labels & checkboxes ---------- */
 
             label {
                 display: flex;
@@ -263,7 +392,7 @@
                 transition:
                     background-color var(--dur-fast) var(--ease-native),
                     border-color var(--dur-fast) var(--ease-native),
-                    transform var(--dur-fast) var(--ease-native);
+                    transform var(--dur-mid) var(--ease-spring);
             }
 
             input[type="checkbox"]:checked {
@@ -280,19 +409,94 @@
                 height: 10px;
                 border: solid var(--tg-theme-button-text-color);
                 border-width: 0 2px 2px 0;
-                transform: rotate(45deg);
+                transform: rotate(45deg) scale(1);
+                animation: checkPop var(--dur-mid) var(--ease-spring);
+            }
+
+            @keyframes checkPop {
+                from { transform: rotate(45deg) scale(0.4); opacity: 0; }
+                to { transform: rotate(45deg) scale(1); opacity: 1; }
             }
 
             input[type="checkbox"]:active {
                 transform: scale(0.9);
             }
 
+            /* "Select all" style toggles: country/category master switches and AI filter */
+            #regions-screen > div > label > input[type="checkbox"],
+            #categories-screen > div > label > input[type="checkbox"],
+            details > div > label:first-child > input[type="checkbox"],
+            #ai-filter {
+                appearance: none;
+                -webkit-appearance: none;
+                width: 46px;
+                height: 27px;
+                min-width: 46px;
+                border-radius: var(--radius-pill);
+                border: none;
+                background-color: var(--border-hairline);
+                position: relative;
+                cursor: pointer;
+                transition: background-color var(--dur-mid) var(--ease-native);
+            }
+
+            #regions-screen > div > label > input[type="checkbox"]::after,
+            #categories-screen > div > label > input[type="checkbox"]::after,
+            details > div > label:first-child > input[type="checkbox"]::after,
+            #ai-filter::after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                width: 23px;
+                height: 23px;
+                border-radius: 50%;
+                background-color: #ffffff;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+                transition: transform var(--dur-mid) var(--ease-spring);
+                border: none;
+                animation: none;
+            }
+
+            #regions-screen > div > label > input[type="checkbox"]:checked,
+            #categories-screen > div > label > input[type="checkbox"]:checked,
+            details > div > label:first-child > input[type="checkbox"]:checked,
+            #ai-filter:checked {
+                background-color: var(--accent-success);
+                border-color: transparent;
+            }
+
+            #regions-screen > div > label > input[type="checkbox"]:checked::after,
+            #categories-screen > div > label > input[type="checkbox"]:checked::after,
+            details > div > label:first-child > input[type="checkbox"]:checked::after,
+            #ai-filter:checked::after {
+                transform: translateX(19px);
+            }
+
+            #regions-screen > div > label > input[type="checkbox"]:active,
+            #categories-screen > div > label > input[type="checkbox"]:active,
+            details > div > label:first-child > input[type="checkbox"]:active,
+            #ai-filter:active {
+                transform: none;
+            }
+
+            /* First label (master row) inside details gets a touch more weight */
+            details > div > label:first-child {
+                font-weight: 600;
+            }
+
+            /* ---------- Text input / search ---------- */
+
             input[type="text"] {
                 width: 100%;
-                padding: 13px 14px;
+                padding: 13px 14px 13px 42px;
                 border: 1.5px solid var(--border-hairline);
                 border-radius: var(--radius-sm);
                 background-color: var(--tg-theme-secondary-bg-color);
+                background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: 14px center;
+                background-size: 17px 17px;
                 color: var(--tg-theme-text-color);
                 box-sizing: border-box;
                 font-size: 15px;
@@ -313,6 +517,16 @@
                 box-shadow: 0 0 0 3px color-mix(in srgb, var(--tg-theme-button-color) 18%, transparent);
             }
 
+            #keywords-screen > div > button {
+                background-color: var(--tg-theme-button-color);
+                color: var(--tg-theme-button-text-color);
+                text-align: center;
+                font-weight: 600;
+                box-shadow: 0 4px 14px color-mix(in srgb, var(--tg-theme-button-color) 35%, transparent);
+            }
+
+            /* ---------- Keyword chips ---------- */
+
             #keywords-list {
                 display: flex;
                 flex-wrap: wrap;
@@ -324,12 +538,18 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
-                background-color: var(--tg-theme-secondary-bg-color);
+                background-color: var(--card-bg);
                 padding: 6px 10px 6px 14px;
                 border-radius: var(--radius-pill);
                 font-size: 14px;
                 box-shadow: var(--shadow-card);
                 transition: transform var(--dur-fast) var(--ease-native), opacity var(--dur-fast) var(--ease-native);
+                animation: chipIn var(--dur-mid) var(--ease-spring);
+            }
+
+            @keyframes chipIn {
+                from { opacity: 0; transform: scale(0.7) translateY(4px); }
+                to { opacity: 1; transform: scale(1) translateY(0); }
             }
 
             #keywords-list span:active {
@@ -353,17 +573,37 @@
                 color: var(--accent-danger);
             }
 
+            #keywords-list em {
+                color: var(--tg-theme-hint-color);
+                font-size: 14px;
+                font-style: normal;
+            }
+
+            /* ---------- Summary cards ---------- */
+
             .summary-card {
-                background-color: var(--tg-theme-secondary-bg-color);
+                position: relative;
+                background-color: var(--card-bg);
                 border-radius: var(--radius-md);
-                padding: 14px 16px;
+                padding: 14px 16px 14px 18px;
                 margin-bottom: 12px;
                 box-shadow: var(--shadow-card);
+                overflow: hidden;
+            }
+
+            .summary-card::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 4px;
+                background-color: var(--tg-theme-button-color);
             }
 
             .summary-card-title {
                 font-size: 15px;
-                font-weight: 600;
+                font-weight: 700;
                 margin-bottom: 10px;
                 color: var(--tg-theme-text-color);
             }
@@ -375,7 +615,7 @@
             }
 
             .badge {
-                background-color: var(--tg-theme-bg-color);
+                background-color: var(--tg-theme-secondary-bg-color);
                 color: var(--tg-theme-text-color);
                 padding: 6px 10px;
                 border-radius: 8px;
@@ -395,13 +635,13 @@
         <div id="main-screen">
             <h1>Настройки парсера</h1>
             <p>Выберите нужные настройки ниже</p>
-            <div>
-                <button onclick="openScreen('regions-screen')">Выбрать ключевые регионы</button>
-                <button onclick="openScreen('categories-screen')">Выбрать категории</button>
-                <button onclick="openScreen('keywords-screen')">Ключевые слова для поиска</button>
-                <button onclick="openUserSettings()">Мои настройки</button>
-                <button class="btn-start" onclick="saveAndClose()">💾 Сохранить настройки</button>
+            <div class="main-list">
+                <button onclick="openScreen('regions-screen')"><span class="row-icon">🌍</span><span class="row-label">Выбрать ключевые регионы</span><span class="row-chevron">›</span></button>
+                <button onclick="openScreen('categories-screen')"><span class="row-icon">📂</span><span class="row-label">Выбрать категории</span><span class="row-chevron">›</span></button>
+                <button onclick="openScreen('keywords-screen')"><span class="row-icon">🔑</span><span class="row-label">Ключевые слова для поиска</span><span class="row-chevron">›</span></button>
+                <button onclick="openUserSettings()"><span class="row-icon">⚙️</span><span class="row-label">Мои настройки</span><span class="row-chevron">›</span></button>
             </div>
+            <button class="btn-start" onclick="saveAndClose()">💾 Сохранить настройки</button>
         </div>
 
         <div id="regions-screen" style="display: none;">
