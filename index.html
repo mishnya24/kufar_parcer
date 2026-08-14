@@ -1726,7 +1726,7 @@
             function getSelectedCategories() {
                 const allCategoriesCb = document.querySelector('#categories-screen > div > label > input[type="checkbox"]');
                 if (allCategoriesCb && allCategoriesCb.checked) {
-                    return ['Искать по всем категориям'];
+                    return [];
                 }
 
                 const selected = [];
@@ -1735,15 +1735,22 @@
                 categoryBlocks.forEach(details => {
                     const checkboxes = details.querySelectorAll('input[type="checkbox"]');
                     const masterCb = checkboxes[0]; 
-                    const categoryName = details.querySelector('summary').textContent.trim();
+                    const subCheckboxes = Array.from(checkboxes).slice(1);
 
                     if (masterCb && masterCb.checked) {
-                        selected.push(`${categoryName}`);
+                        subCheckboxes.forEach(cb => {
+                            const text = cb.parentElement.textContent.trim();
+                            if (text && !selected.includes(text)) {
+                                selected.push(text);
+                            }
+                        });
                     } else {
-                        const subCheckboxes = Array.from(checkboxes).slice(1);
                         subCheckboxes.forEach(cb => {
                             if (cb.checked) {
-                                selected.push(cb.parentElement.textContent.trim());
+                                const text = cb.parentElement.textContent.trim();
+                                if (text && !selected.includes(text)) {
+                                    selected.push(text);
+                                }
                             }
                         });
                     }
