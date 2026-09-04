@@ -104,7 +104,6 @@
                 margin: 0 0 18px 0;
             }
 
-            /* ---------- Base buttons ---------- */
 
             button {
                 width: 100%;
@@ -144,7 +143,6 @@
                 box-shadow: var(--shadow-card-active);
             }
 
-            /* ---------- Main screen grouped list ---------- */
 
             #main-screen > div.main-list {
                 background-color: var(--card-bg);
@@ -280,8 +278,6 @@
                 box-shadow: 0 3px 10px rgba(52, 199, 89, 0.3);
             }
 
-            /* ---------- Accordions ---------- */
-
             details {
                 background-color: var(--card-bg);
                 border-radius: var(--radius-md);
@@ -359,7 +355,6 @@
                 gap: 11px;
             }
 
-            /* ---------- Labels & checkboxes ---------- */
 
             label {
                 display: flex;
@@ -423,11 +418,10 @@
                 transform: scale(0.9);
             }
 
-            /* "Select all" style toggles: country/category master switches and AI filter */
             #regions-screen > div > label > input[type="checkbox"],
             #categories-screen > div > label > input[type="checkbox"],
             details > div > label:first-child > input[type="checkbox"],
-            #ai-filter {
+            /* #ai-filter {
                 appearance: none;
                 -webkit-appearance: none;
                 width: 46px;
@@ -439,12 +433,12 @@
                 position: relative;
                 cursor: pointer;
                 transition: background-color var(--dur-mid) var(--ease-native);
-            }
+            }*/
 
             #regions-screen > div > label > input[type="checkbox"]::after,
             #categories-screen > div > label > input[type="checkbox"]::after,
             details > div > label:first-child > input[type="checkbox"]::after,
-            #ai-filter::after {
+            /*#ai-filter::after {
                 content: '';
                 position: absolute;
                 top: 2px;
@@ -457,36 +451,35 @@
                 transition: transform var(--dur-mid) var(--ease-spring);
                 border: none;
                 animation: none;
-            }
+            }*/
 
             #regions-screen > div > label > input[type="checkbox"]:checked,
             #categories-screen > div > label > input[type="checkbox"]:checked,
             details > div > label:first-child > input[type="checkbox"]:checked,
-            #ai-filter:checked {
+            /*#ai-filter:checked {
                 background-color: var(--accent-success);
                 border-color: transparent;
-            }
+            }*/
 
             #regions-screen > div > label > input[type="checkbox"]:checked::after,
             #categories-screen > div > label > input[type="checkbox"]:checked::after,
             details > div > label:first-child > input[type="checkbox"]:checked::after,
-            #ai-filter:checked::after {
+            /*#ai-filter:checked::after {
                 transform: translateX(19px);
-            }
+            }*/
 
             #regions-screen > div > label > input[type="checkbox"]:active,
             #categories-screen > div > label > input[type="checkbox"]:active,
             details > div > label:first-child > input[type="checkbox"]:active,
-            #ai-filter:active {
+            /*#ai-filter:active {
                 transform: none;
-            }
+            }*/
 
             /* First label (master row) inside details gets a touch more weight */
             details > div > label:first-child {
                 font-weight: 600;
             }
 
-            /* ---------- Text input / search ---------- */
 
             input[type="text"] {
                 width: 100%;
@@ -1371,12 +1364,12 @@
             <button class="btn-back" onclick="openScreen('main-screen')">← Назад</button>
             <h2>Ключевые слова</h2>
 
-            <div class="toggle-card">
+            <!--<div class="toggle-card">
                 <div class="toggle-card-text">
                     <div class="toggle-card-title">Использовать ИИ-фильтр</div>
                 </div>
                 <input id="ai-filter" type="checkbox" checked aria-label="Использовать ИИ-фильтр">
-            </div>
+            </div>-->
 
             <div class="input-group">
                 <input id="keywords-input" type="text" placeholder="Ключевые слова через запятую..." onkeydown="if (event.key === 'Enter') { event.preventDefault(); saveKeywords(); }">
@@ -1456,7 +1449,6 @@
                     regions: getSelectedRegions(),
                     categories: getSelectedCategories(),
                     keywords: keywords,
-                    aiFilter: document.getElementById('ai-filter').checked
                 };
 
                 tg.sendData(JSON.stringify(DATA));
@@ -1474,9 +1466,9 @@
                     renderKeywords();
                 }
 
-                if (typeof state.aiFilter === 'boolean') {
-                    document.getElementById('ai-filter').checked = state.aiFilter;
-                }
+                //if (typeof state.aiFilter === 'boolean') {
+                    //document.getElementById('ai-filter').checked = state.aiFilter;
+                //}
 
                 if (Array.isArray(state.regions)) {
                     restoreCheckboxes('regions-screen', state.regions); 
@@ -1530,13 +1522,12 @@
             async function saveCurrentState() {
                 const currentRegions = getSelectedRegions();
                 const currentCategories = getSelectedCategories();
-                const currentAiFilter = document.getElementById('ai-filter').checked;
+                //const currentAiFilter = document.getElementById('ai-filter').checked;
 
                 const dataToSend = {
                     regions: currentRegions,
                     categories: currentCategories,
                     keywords: keywords,
-                    aiFilter: currentAiFilter
                 };
 
                 try {
