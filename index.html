@@ -771,7 +771,7 @@
                         <label><input type='checkbox'> Городище</label><br>
                         <label><input type='checkbox'> Давид - Городок</label><br>
                         <label><input type='checkbox'> Дрогичин</label><br>
-                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Другие города<span style="display:none">_31</span></label><br>
                         <label><input type='checkbox'> Жабинка</label><br>
                         <label><input type='checkbox'> Иваново</label><br>
                         <label><input type='checkbox'> Ивацевичи</label><br>
@@ -801,7 +801,7 @@
                         <label><input type='checkbox'> Гомель</label><br>
                         <label><input type='checkbox'> Гомельский район</label><br>
                         <label><input type='checkbox'> Добруш</label><br>
-                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Другие города<span style="display:none">_32</span></label><br>
                         <label><input type='checkbox'> Ельск</label><br>
                         <label><input type='checkbox'> Житковичи</label><br>
                         <label><input type='checkbox'> Жлобин</label><br>
@@ -837,7 +837,7 @@
                         <label><input type='checkbox'> Вороново</label><br>
                         <label><input type='checkbox'> Гродненский район</label><br>
                         <label><input type='checkbox'> Гродно</label><br>
-                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Другие города<span style="display:none">_33</span></label><br>
                         <label><input type='checkbox'> Дятлово</label><br>
                         <label><input type='checkbox'> Зельва</label><br>
                         <label><input type='checkbox'> Ивье</label><br>
@@ -869,7 +869,7 @@
                         <label><input type='checkbox'> Глуск</label><br>
                         <label><input type='checkbox'> Горки</label><br>
                         <label><input type='checkbox'> Дрибин</label><br>
-                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Другие города<span style="display:none">_34</span></label><br>
                         <label><input type='checkbox'> Елизово</label><br>
                         <label><input type='checkbox'> Кировск</label><br>
                         <label><input type='checkbox'> Климовичи</label><br>
@@ -901,7 +901,7 @@
                         <label><input type='checkbox'> Воложин</label><br>
                         <label><input type='checkbox'> Городея</label><br>
                         <label><input type='checkbox'> Дзержинск</label><br>
-                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Другие города<span style="display:none">_35</span></label><br>
                         <label><input type='checkbox'> Ждановичи</label><br>
                         <label><input type='checkbox'> Жодино</label><br>
                         <label><input type='checkbox'> Заславль</label><br>
@@ -949,7 +949,7 @@
                         <label><input type='checkbox'> Глубокое</label><br>
                         <label><input type='checkbox'> Городок</label><br>
                         <label><input type='checkbox'> Докшицы</label><br>
-                        <label><input type='checkbox'> Другие города</label><br>
+                        <label><input type='checkbox'> Другие города<span style="display:none">_36</span></label><br>
                         <label><input type='checkbox'> Дубровно</label><br>
                         <label><input type='checkbox'> Коханово</label><br>
                         <label><input type='checkbox'> Лепель</label><br>
@@ -1753,11 +1753,12 @@
             function renderSummary() {
                 const regions = getSelectedRegions();
                 const regionsContainer = document.getElementById('summary-regions');
-                
+    
                 if (regions.length > 0) {
-                    regionsContainer.innerHTML = regions.map(item => `<span class="badge">${item}</span>`).join('');
+                    const displayRegions = regions.map(item => item.replace(/_\d+$/, ''));
+                    regionsContainer.innerHTML = displayRegions.map(item => `<span class="badge">${item}</span>`).join('');
                 } else {
-                    regionsContainer.innerHTML = '<em class="empty-text">Ничего не выбрано</em>';
+                     regionsContainer.innerHTML = '<em class="empty-text">Ничего не выбрано</em>';
                 }
 
                 const categories = getSelectedCategories();
